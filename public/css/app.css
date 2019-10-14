@@ -10644,3 +10644,90 @@ a.text-dark:focus {
   }
 }
 
+html,
+body {
+  background-color: #F6F6F6;
+  color: #8D8C8A;
+  font-family: "Nunito", sans-serif;
+}
+
+.navbar {
+  background-color: #52D6F4;
+  line-height: 2;
+  box-shadow: 3px -5px 5px 6px #999;
+}
+
+.navbar-dark .navbar-nav .nav-link,
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+a,
+a:hover {
+  color: #52D6F4;
+}
+
+.big-profile-image {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+}
+
+.medium-profile-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.small-profile-image {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+a.date {
+  color: #8D8C8A;
+}
+
+.submit-button,
+.submit-button:hover {
+  background-color: #52D6F4;
+  color: #FFFFFF;
+}
+
+textarea {
+  resize: none;
+}
+
+.action {
+  border-radius: 2rem;
+  background-color: #F6F6F6;
+  color: #8D8C8A;
+}
+
+.comment {
+  font-size: 0.85rem;
+  background-color: #F6F6F6;
+}
+
+.post-content,
+.comment-content {
+  color: #363538;
+}
+
+.border-bottom-only {
+  border: 0;
+  border-bottom: 1px solid #8D8C8A;
+  border-radius: 0;
+}
+
+.border-bottom-only:focus {
+  box-shadow: none;
+  border-bottom-color: #52D6F4 !important;
+}
+
+.label {
+  font-size: 0.7rem;
+}
+
