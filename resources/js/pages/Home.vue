@@ -11,107 +11,9 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="card border-0 mb-4">
-                <div class="card-body p-0">
-                    <form>
-                        <div class="form-group mb-0">
-                            <textarea class="form-control shadow-none border-0 p-3" rows="4"
-                                      placeholder="What's on your mind..."></textarea>
-                        </div>
-                        <hr class="my-0">
-                        <div class="form-group pl-4 py-2 mb-0">
-                            <button class="btn mr-3 action py-1">
-                                <img src="images/send.png" width="20" height="20" class="mr-1">
-                                <small class="font-weight-bold">Post</small>
-                            </button>
-                            <button class="btn action py-1">
-                                <img src="images/upload.png" width="20" height="20" class="mr-1">
-                                <small class="font-weight-bold">Upload</small>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <new-post></new-post>
 
-            <div class="card border-0 mb-4 pb-4">
-                <div class="media mx-4 mt-3">
-                    <img src="images/avatar.png" class="mr-3 medium-profile-image">
-                    <div class="media-body my-auto">
-                        <p class="mb-0 ">
-                            <a href="#" class="font-weight-bold username">Osama Hamed</a>
-                        </p>
-                        <p class="mb-0">
-                            <a href="#" class="small date">5 days ago.</a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="card-body py-3">
-                    <p class="card-text post-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        Aspernatur dolor
-                        ducimus illo minima quaerat reprehenderit soluta totam? Aperiam, aspernatur dolor exercitationem
-                        nobis odit provident quidem quisquam quo soluta veniam veritatis?Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit. Animi culpa dolor, eos expedita facere incidunt iure, nam omnis
-                        reiciendis rem repellat reprehenderit saepe sunt. Enim facilis harum minima nam optio.</p>
-                </div>
-
-                <img src="images/post.jpeg" class="card-img-top">
-
-                <div class="media mx-4 mt-3">
-                    <img src="images/avatar.png" class="mr-3 small-profile-image">
-                    <div class="media-body my-auto">
-                        <textarea rows="1" class="form-control" placeholder="Have something to say..."></textarea>
-                    </div>
-                </div>
-
-                <div class="comments">
-                    <div class="comment mx-4 px-3">
-                        <div class="media mt-3 py-2">
-                            <img src="images/avatar.png" class="mr-3 small-profile-image">
-                            <div class="media-body my-auto">
-                                <p class="mb-0 ">
-                                    <a href="#" class="font-weight-bold username small">Osama Hamed</a>
-                                    <a href="#" class="small date">5 days ago.</a>
-                                </p>
-                                <p class="mb-0 comment-content">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                    elit. Accusamus ad
-                                    alias animi
-                                    autem et eveniet excepturi.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment mx-4 px-3">
-                        <div class="media mt-3 py-2">
-                            <img src="images/avatar.png" class="mr-3 small-profile-image">
-                            <div class="media-body my-auto">
-                                <p class="mb-0 ">
-                                    <a href="#" class="font-weight-bold username small">Osama Hamed</a>
-                                    <a href="#" class="small date">5 days ago.</a>
-                                </p>
-                                <p class="mb-0 comment-content">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                    elit. Accusamus ad
-                                    alias animi
-                                    autem et eveniet excepturi.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment mx-4 px-3">
-                        <div class="media mt-3 py-2">
-                            <img src="images/avatar.png" class="mr-3 small-profile-image">
-                            <div class="media-body my-auto">
-                                <p class="mb-0 ">
-                                    <a href="#" class="font-weight-bold username small">Osama Hamed</a>
-                                    <a href="#" class="small date">5 days ago.</a>
-                                </p>
-                                <p class="mb-0 comment-content">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                    elit. Accusamus ad
-                                    alias animi
-                                    autem et eveniet excepturi.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <posts-list></posts-list>
         </div>
 
         <div class="col lg-3">
@@ -174,7 +76,10 @@
 </template>
 
 <script>
-    export default {
+    import NewPost from '../components/NewPost.vue';
+    import PostsList from '../components/PostsList.vue';
 
+    export default {
+        components: {NewPost, PostsList}
     }
 </script>

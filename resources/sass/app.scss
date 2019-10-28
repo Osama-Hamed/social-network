@@ -65,6 +65,7 @@ textarea {
   border-radius: 2rem;
   background-color: #F6F6F6;
   color: #8D8C8A;
+  cursor: pointer
 }
 
 .comment {
@@ -73,6 +74,7 @@ textarea {
 }
 
 .post-content, .comment-content {
+  white-space: pre-wrap;
   color: #363538;
 }
 
@@ -89,4 +91,25 @@ textarea {
 
 .label {
   font-size: .7rem;
+}
+
+#file-input {
+  display: none;
+}
+
+.selected-image {
+  height: 100px;
+  width: 100%;
+}
+
+.remove-image {
+  position: absolute;
+  top: 7px;
+  right: 25px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.carousel {
+  height: 400px;
 }

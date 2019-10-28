@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import axios from 'axios';
-import { updateAuthorizationHeader, getAccess } from './shared/helpers';
+import { updateAuthorizationHeader } from './shared/helpers';
 
 window.Vue = Vue;
 Vue.use(VueRouter);

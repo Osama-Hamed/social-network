@@ -9,3 +9,8 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('/logout', 'AuthController@logout');
     });
 });
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/posts', 'PostController@index');
+    Route::post('/posts', 'PostController@store');
+});

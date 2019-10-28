@@ -25,4 +25,19 @@ export default {
             }
         }
     },
+
+    post: {
+        create: {
+            method: 'post', 
+            url() { 
+                return '/api/posts'; 
+            }  
+        },
+        all: {
+            method: 'get',
+            url() {
+                return '/api/posts'; 
+            }
+        },
+    },
 }
