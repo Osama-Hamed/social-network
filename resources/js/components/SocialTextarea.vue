@@ -22,9 +22,9 @@
         },
 
         created() {
-            this.rowsCount = this.initialRowsCount;
-
             if (this.hasBorder) this.heightReduction = 2;
+
+            this.resize();
         },
 
         watch: {

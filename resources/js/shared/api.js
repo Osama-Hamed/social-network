@@ -39,5 +39,11 @@ export default {
                 return '/api/posts'; 
             }
         },
+        update: {
+            method: 'patch',
+            url(id) {
+                return '/api/posts/' + id;
+            }
+        },
     },
 }

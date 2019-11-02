@@ -10698,6 +10698,7 @@ a.date {
 
 textarea {
   resize: none;
+  overflow: hidden;
 }
 
 .action {
@@ -10733,7 +10734,8 @@ textarea {
   font-size: 0.7rem;
 }
 
-#file-input {
+#file-input,
+#edit-file-input {
   display: none;
 }
 
@@ -10752,5 +10754,45 @@ textarea {
 
 .carousel {
   height: 400px;
+}
+
+.social-modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: overlay;
+}
+
+.social-modal-content {
+  margin-top: 15%;
+  margin-bottom: 15%;
+}
+
+.dropdown {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  min-width: auto;
+}
+
+.dropdown-item {
+  color: #363538;
+}
+
+.dropdown-item:hover {
+  color: #FFFFFF;
+  background: #52D6F4;
+}
+
+.dropdown-item:focus {
+  color: #FFFFFF;
+  background-color: #52D6F4;
+}
+
+.dropdown-toggle::after {
+  display: none;
 }
 

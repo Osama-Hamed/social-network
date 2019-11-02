@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
@@ -15,5 +17,10 @@ class PostController extends Controller
     public function store(StorePostRequest $form)
     {
         return response()->json($form->save(), 201);
+    }
+
+    public function update(UpdatePostRequest $form, Post $post)
+    {
+    	return response()->json($form->save(), 200);
     }
 }

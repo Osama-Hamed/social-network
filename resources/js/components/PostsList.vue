@@ -19,6 +19,12 @@
             this.fetch();
 
             Event.listen('post-created', post => this.add(post));
+
+            Event.listen('post-updated', post => {
+                this.replace(post, this.items.findIndex((item) => item.id == post.id));
+                
+                window.scrollTo(0, 0);
+            });
         },
 
         methods: {

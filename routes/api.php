@@ -13,4 +13,5 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/posts', 'PostController@index');
     Route::post('/posts', 'PostController@store');
+    Route::patch('/posts/{post}', 'PostController@update');
 });

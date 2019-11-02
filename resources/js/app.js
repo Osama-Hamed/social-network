@@ -19,11 +19,15 @@ new Vue({
         assignAuthData(user) {
             this.authUser = user;
             this.signedIn = true;
+
+            window.authUser = user;
         },
 
         resetAuthData() {
             this.authUser = null;
             this.signedIn = false;
+
+            window.authUser = null;
         },
     },
 
