@@ -23,4 +23,13 @@ class PostController extends Controller
     {
     	return response()->json($form->save(), 200);
     }
+
+    public function destroy(Post $post)
+    {
+        $this->authorize('manage', $post);
+
+        tap($post)->removeImages()->delete();
+
+        return response()->json(null, 204);
+    }
 }

@@ -22,9 +22,11 @@
 
             Event.listen('post-updated', post => {
                 this.replace(post, this.items.findIndex((item) => item.id == post.id));
-                
+
                 window.scrollTo(0, 0);
             });
+
+            Event.listen('post-deleted', postId => this.remove(this.items.findIndex((item) => item.id == postId)));
         },
 
         methods: {

@@ -16,7 +16,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right py-1" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item px-3 py-0 small" href="#" @click.prevent="editing = true">Edit</a>
-                    <a class="dropdown-item px-3 py-0 small" href="#">Delete</a>
+                    <a class="dropdown-item px-3 py-0 small" href="#" @click.prevent="deleting = true">Delete</a>
                 </div>
             </div>
         </div>
@@ -74,6 +74,7 @@
         </div>
 
         <edit-post v-if="editing" :data="data" @cancel="editing = false"></edit-post>
+        <delete-post v-if="deleting" :id="data.id" @cancel="deleting = false"></delete-post>
     </div>
 </template>
 
@@ -81,15 +82,17 @@
     import Carousel from './Carousel.vue';
     import moment from 'moment';
     import EditPost from './EditPost.vue';
+    import DeletePost from './DeletePost.vue';
 
     export default {
         props: ['data'],
 
-        components: {Carousel, EditPost},
+        components: {Carousel, EditPost, DeletePost},
 
         data() {
             return {
-                editing: false
+                editing: false,
+                deleting: false
             }
         },
 

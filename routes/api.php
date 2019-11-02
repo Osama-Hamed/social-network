@@ -14,4 +14,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/posts', 'PostController@index');
     Route::post('/posts', 'PostController@store');
     Route::patch('/posts/{post}', 'PostController@update');
+    Route::delete('/posts/{post}', 'PostController@destroy');
 });
