@@ -10796,3 +10796,7 @@ textarea {
   display: none;
 }
 
+.post-action {
+  cursor: pointer;
+}
+

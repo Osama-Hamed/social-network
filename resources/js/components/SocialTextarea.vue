@@ -45,6 +45,10 @@
                 this.height = 'auto';
 
                 this.$nextTick(() => this.height = this.$el.scrollHeight + this.heightReduction + 'px');
+            },
+
+            focus() {
+                this.$el.focus();
             }
         }
     }

@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-use App\Post;
 
 abstract class PostFormRequest extends FormRequest
 {

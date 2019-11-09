@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {

@@ -10,7 +10,7 @@ class Post extends Model
 {
     protected $fillable = ['user_id', 'body', 'images'];
     protected $casts = ['images' => 'array'];
-    protected $with = ['owner'];
+    protected $with = ['owner', 'comments.owner'];
     protected $appends = ['encodedImages'];
 
     public function owner()
@@ -25,13 +25,13 @@ class Post extends Model
 
     public function getEncodedImagesAttribute()
     {
-        $encodedImages = [];
+        $encoded_images = [];
 
         foreach ($this->images as $image) {
-            $encodedImages[] = Image::make(public_path('/storage/posts/' . $image))->encode('data-url');
+            $encoded_images[] = Image::make(public_path('/storage/posts/' . $image))->encode('data-url');
         }
 
-        return $encodedImages;
+        return $encoded_images;
     }
 
     public function removeImages()
@@ -41,5 +41,18 @@ class Post extends Model
                 return "posts/$imageName";
             }, $this->images)
         );
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function addComment($body)
+    {
+        return $this->comments()->create([
+            'user_id' => auth()->id(),
+            'body' => $body
+        ]);
     }
 }

@@ -46,9 +46,19 @@ export default {
             }
         },
         delete: {
-            method: 'delete', url(id) {
+            method: 'delete', 
+            url(id) {
                 return '/api/posts/' + id;
             }
-        },
+        }
+    },
+
+    comment: {
+        create: {
+            method: 'post',
+            url(postId) {
+                return '/api/posts/' + postId + '/comments';
+            }
+        }
     },
 }
