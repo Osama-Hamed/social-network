@@ -17,4 +17,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('/posts/{post}', 'PostController@destroy');
 
     Route::post('/posts/{post}/comments', 'CommentController@store');
+    Route::patch('/comments/{comment}', 'CommentController@update');
 });

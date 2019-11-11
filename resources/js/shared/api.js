@@ -59,6 +59,12 @@ export default {
             url(postId) {
                 return '/api/posts/' + postId + '/comments';
             }
+        },
+        update: {
+            method: 'patch',
+            url(id) {
+                return '/api/comments/' + id;
+            }
         }
     },
 }
