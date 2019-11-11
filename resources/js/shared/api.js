@@ -65,6 +65,12 @@ export default {
             url(id) {
                 return '/api/comments/' + id;
             }
+        },
+        delete: {
+            method: 'delete',
+            url(id) {
+                return '/api/comments/' + id;
+            }
         }
     },
 }

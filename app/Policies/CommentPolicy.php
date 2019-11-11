@@ -14,4 +14,9 @@ class CommentPolicy
     {
         return $user->is($comment->owner);
     }
+
+    public function delete(User $user, Comment $comment)
+    {
+        return $user->is($comment->owner) || $user->is($comment->post->owner);
+    }
 }

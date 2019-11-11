@@ -18,4 +18,13 @@ class CommentController extends Controller
     {
     	return response()->json($form->save(), 200);
     }
+
+    public function destroy(Comment $comment)
+    {
+        $this->authorize('delete', $comment);
+
+        $comment->delete();
+        
+        return response()->json(null, 204);
+    }
 }

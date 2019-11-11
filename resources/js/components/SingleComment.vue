@@ -9,14 +9,15 @@
 				</p>
 				<p class="mb-0 comment-content" v-if="! editing">{{ data.body }}</p>
 				<edit-comment :data="data" @cancel="editing = false" v-else></edit-comment>
+				<delete-comment :data="data" @cancel="deleting = false" v-if="deleting"></delete-comment>
 			</div>
 
-			<div class="dropdown float-right" v-if="canBeUpdated">
+			<div class="dropdown float-right" v-if="canBeUpdated || canBeDeleted">
                 <img src="/images/menu.png" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                 <div class="dropdown-menu dropdown-menu-right py-1" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item px-3 py-0 small" href="#" @click.prevent="editing = true">Edit</a>
-                    <a class="dropdown-item px-3 py-0 small" href="#">Delete</a>
+                    <a class="dropdown-item px-3 py-0 small" href="#" @click.prevent="editing = true" v-if="canBeUpdated">Edit</a>
+                    <a class="dropdown-item px-3 py-0 small" href="#" @click.prevent="deleting = true" v-if="canBeDeleted">Delete</a>
                 </div>
             </div>
 		</div>
@@ -26,21 +27,27 @@
 <script>
 	import moment from 'moment';
 	import EditComment from './EditComment.vue';
+	import DeleteComment from './DeleteComment.vue';
 	
 	export default {
 		props: ['data', 'postOwnerId'],
 
-		components: {EditComment},
+		components: {EditComment, DeleteComment},
 
 		data() {
 			return {
-				editing: false
+				editing: false,
+				deleting: false
 			}
 		},
 
 		computed: {
 			canBeUpdated() {
 				return window.authUser.id === this.data.user_id;
+			},
+
+			canBeDeleted() {
+				return window.authUser.id === this.data.user_id || window.authUser.id === this.postOwnerId;
 			}
 		},
 
