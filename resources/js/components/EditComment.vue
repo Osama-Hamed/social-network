@@ -42,6 +42,7 @@
                 try {
                     const response = await this.form[api.comment.update.method](api.comment.update.url(this.data.id));
                     Event.fire('comment-updated', response.data);
+                    this.$emit('cancel');
                 } catch (error) {}
             },
 

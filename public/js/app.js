@@ -1915,15 +1915,18 @@ __webpack_require__.r(__webpack_exports__);
       if (_this.post.id === comment.post_id) _this.add(comment);
     });
     _shared_event__WEBPACK_IMPORTED_MODULE_2__["default"].listen('comment-updated', function (comment) {
-      if (_this.post.id === comment.post_id) _this.replace(comment, _this.items.findIndex(function (item) {
+      var index = _this.items.findIndex(function (item) {
         return item.id == comment.id;
-      })); // let index = this.items.findIndex((item) => item.id == comment.id);
-      // this.$set(this.items[index], 'body', comment.body);
+      });
+
+      if (_this.post.id === comment.post_id) _this.replace(index, comment);
     });
     _shared_event__WEBPACK_IMPORTED_MODULE_2__["default"].listen('comment-deleted', function (comment) {
-      if (_this.post.id === comment.post_id) _this.remove(_this.items.findIndex(function (item) {
+      var index = _this.items.findIndex(function (item) {
         return item.id == comment.id;
-      }));
+      });
+
+      if (_this.post.id === comment.post_id) _this.remove(index);
     });
   },
   methods: {
@@ -2187,19 +2190,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 response = _context.sent;
                 _shared_event__WEBPACK_IMPORTED_MODULE_4__["default"].fire('comment-updated', response.data);
-                _context.next = 9;
+                this.$emit('cancel');
+                _context.next = 10;
                 break;
 
-              case 7:
-                _context.prev = 7;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
 
-              case 9:
+              case 10:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 7]]);
+        }, _callee, this, [[0, 8]]);
       }));
 
       function update() {
@@ -2306,6 +2310,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   created: function created() {
     this.showPost();
+  },
+  mounted: function mounted() {
+    this.$refs.socialTextarea.focus();
   },
   methods: {
     showPost: function showPost() {
@@ -2660,16 +2667,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _this.add(post);
     });
     _shared_event__WEBPACK_IMPORTED_MODULE_3__["default"].listen('post-updated', function (post) {
-      _this.replace(post, _this.items.findIndex(function (item) {
+      var index = _this.items.findIndex(function (item) {
         return item.id == post.id;
-      }));
+      });
+
+      _this.remove(index);
+
+      _this.$nextTick(function () {
+        return _this.add(post);
+      });
 
       window.scrollTo(0, 0);
     });
     _shared_event__WEBPACK_IMPORTED_MODULE_3__["default"].listen('post-deleted', function (postId) {
-      return _this.remove(_this.items.findIndex(function (item) {
+      var index = _this.items.findIndex(function (item) {
         return item.id == postId;
-      }));
+      });
+
+      _this.remove(index);
     });
   },
   methods: {
@@ -44760,6 +44775,7 @@ var render = function() {
                       { staticClass: "form-group mb-0" },
                       [
                         _c("social-textarea", {
+                          ref: "socialTextarea",
                           attrs: { initialRowsCount: 4, hasPadding: true },
                           model: {
                             value: _vm.form.body,
@@ -62624,13 +62640,8 @@ __webpack_require__.r(__webpack_exports__);
     add: function add(item) {
       this.items.unshift(item);
     },
-    replace: function replace(item, index) {
-      var _this = this;
-
-      this.remove(index);
-      this.$nextTick(function () {
-        return _this.add(item);
-      });
+    replace: function replace(index, item) {
+      this.items.splice(index, 1, item);
     },
     remove: function remove(index) {
       this.items.splice(index, 1);

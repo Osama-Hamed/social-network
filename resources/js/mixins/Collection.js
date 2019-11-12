@@ -10,10 +10,8 @@ export default {
 			this.items.unshift(item);
 		},
 
-		replace(item, index) {
-			this.remove(index);
-
-			this.$nextTick(() => this.add(item));
+		replace(index, item) {
+			this.items.splice(index, 1, item);
 		},
 
 		remove(index) {

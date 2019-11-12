@@ -24,15 +24,13 @@
 			});
 
 			Event.listen('comment-updated', comment => {
-				if (this.post.id === comment.post_id) this.replace(comment, this.items.findIndex((item) => item.id == comment.id));
-
-				// let index = this.items.findIndex((item) => item.id == comment.id);
-
-				// this.$set(this.items[index], 'body', comment.body);
+				let index = this.items.findIndex((item) => item.id == comment.id);
+				if (this.post.id === comment.post_id) this.replace(index, comment);
 			});
 
 			Event.listen('comment-deleted', comment => {
-				if (this.post.id === comment.post_id) this.remove(this.items.findIndex((item) => item.id == comment.id));
+				let index = this.items.findIndex((item) => item.id == comment.id);
+				if (this.post.id === comment.post_id) this.remove(index);
 			});
 		},
 

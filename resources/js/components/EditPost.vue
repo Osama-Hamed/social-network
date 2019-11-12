@@ -7,7 +7,7 @@
                         <div class="card-body p-0">
                             <form @submit.prevent="update">
                                 <div class="form-group mb-0">
-                                    <social-textarea v-model="form.body" :initialRowsCount="4" :hasPadding="true"></social-textarea>
+                                    <social-textarea v-model="form.body" :initialRowsCount="4" :hasPadding="true" ref="socialTextarea"></social-textarea>
                                 </div>
 
                                 <div class="card-body row" v-if="form.images.length">
@@ -70,6 +70,10 @@
 
         created() {
             this.showPost();
+        },
+
+        mounted() {
+            this.$refs.socialTextarea.focus();
         },
 
         methods: {

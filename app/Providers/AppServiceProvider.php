@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use App\Post;
+use App\Observers\PostObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,5 +50,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::replacer('base64image', function($message, $attribute, $rule, $parameters) {
             return str_replace(':values', join(',', $parameters), $message);
         });
+
+        Post::observe(PostObserver::class);
     }
 }

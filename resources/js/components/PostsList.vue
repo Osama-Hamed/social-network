@@ -24,12 +24,17 @@
             });
 
             Event.listen('post-updated', post => {
-                this.replace(post, this.items.findIndex((item) => item.id == post.id));
+                let index = this.items.findIndex((item) => item.id == post.id);
+                this.remove(index);
+                this.$nextTick(() => this.add(post));
 
                 window.scrollTo(0, 0);
             });
 
-            Event.listen('post-deleted', postId => this.remove(this.items.findIndex((item) => item.id == postId)));
+            Event.listen('post-deleted', postId => {
+                let index = this.items.findIndex((item) => item.id == postId);
+                this.remove(index);
+            });
         },
 
         methods: {
