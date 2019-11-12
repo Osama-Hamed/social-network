@@ -73,4 +73,19 @@ export default {
             }
         }
     },
+
+    favorite: {
+        create: {
+            method: 'post',
+            url(type, id) {
+                return '/api/' + type + 's/' + id + '/favorites';
+            }
+        },
+        delete: {
+            method: 'delete',
+            url(type, id) {
+                return '/api/' + type + 's/' + id + '/favorites';
+            }
+        }
+    }
 }

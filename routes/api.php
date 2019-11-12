@@ -19,4 +19,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/posts/{post}/comments', 'CommentController@store');
     Route::patch('/comments/{comment}', 'CommentController@update');
     Route::delete('/comments/{comment}', 'CommentController@destroy');
+
+    Route::post('/posts/{post}/favorites', 'PostFavoriteController@store');
+    Route::delete('/posts/{post}/favorites', 'PostFavoriteController@destroy');
+
+    Route::post('/comments/{comment}/favorites', 'CommentFavoriteController@store');
+    Route::delete('/comments/{comment}/favorites', 'CommentFavoriteController@destroy');
 });

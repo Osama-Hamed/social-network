@@ -12,6 +12,8 @@
 				<delete-comment :data="data" @cancel="deleting = false" v-if="deleting"></delete-comment>
 			</div>
 
+			<favorite :favoritableType="'comment'" :favoritable="data"></favorite>
+
 			<div class="dropdown float-right" v-if="canBeUpdated || canBeDeleted">
                 <img src="/images/menu.png" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
@@ -28,11 +30,12 @@
 	import moment from 'moment';
 	import EditComment from './EditComment.vue';
 	import DeleteComment from './DeleteComment.vue';
+	import Favorite from './Favorite.vue';
 	
 	export default {
 		props: ['data', 'postOwnerId'],
 
-		components: {EditComment, DeleteComment},
+		components: {EditComment, DeleteComment, Favorite},
 
 		data() {
 			return {

@@ -28,10 +28,7 @@
         <carousel v-if="data.images.length" :srcs="data.images"></carousel>
 
         <div class="d-flex mx-auto mt-3">
-            <span class="mr-4">
-                <img src="/images/heart.png" class="post-action">
-                <small>5</small>
-            </span>
+            <favorite :favoritableType="'post'" :favoritable="data"></favorite>
             <span class="mr-4">
                 <img src="/images/comment.png" class="post-action" @click="focusOnCommentsInput">
                 <small>{{ commentsCount }}</small>
@@ -57,11 +54,12 @@
     import DeletePost from './DeletePost.vue';
     import NewComment from './NewComment.vue';
     import CommentsList from './CommentsList.vue';
+    import Favorite from './Favorite.vue';
 
     export default {
         props: ['data'],
 
-        components: {Carousel, EditPost, DeletePost, NewComment, CommentsList},
+        components: {Carousel, EditPost, DeletePost, NewComment, CommentsList, Favorite},
 
         data() {
             return {

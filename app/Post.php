@@ -5,13 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\Favoritable;
 
 class Post extends Model
 {
+    use Favoritable;
+    
     protected $fillable = ['user_id', 'body', 'images'];
     protected $casts = ['images' => 'array'];
     protected $with = ['owner', 'comments.owner'];
-    protected $appends = ['encodedImages'];
+    protected $appends = ['encodedImages', 'favoritesCount', 'isFavorited'];
 
     public function owner()
     {
