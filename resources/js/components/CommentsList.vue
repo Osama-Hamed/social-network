@@ -20,7 +20,10 @@
 			this.assignComments();
 
 			Event.listen('comment-created', comment => {
-				if (this.post.id === comment.post_id) this.add(comment);
+				if (this.post.id === comment.post_id) {
+					comment.favorites_count = 0;
+					this.add(comment);
+				}
 			});
 
 			Event.listen('comment-updated', comment => {
@@ -38,6 +41,12 @@
 			assignComments() {
 				this.items = this.post.comments;
 			}
-		}
+		},
+
+		beforeDestroy() {
+            Event.stopListening('comment-created');
+            Event.stopListening('comment-updated');
+            Event.stopListening('comment-deleted');
+        }
 	}
 </script>

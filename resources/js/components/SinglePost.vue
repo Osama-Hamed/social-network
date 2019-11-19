@@ -1,11 +1,12 @@
 <template>
-    <div class="card border-0 mb-4 pb-4">
+    <div class="card mb-4 pb-4">
         <div class="media mx-4 mt-3">
-            <img :src="'images/' + data.owner.avatar" class="mr-3 medium-profile-image">
+            <img :src="'/images/' + data.owner.avatar" class="mr-3 medium-profile-image">
             <div class="media-body my-auto">
                 <p class="mb-0 ">
-                    <a href="#" class="font-weight-bold username">{{ data.owner.first_name + ' ' + data.owner.last_name
-                        }}</a>
+                    <router-link :to="'/profile/' + data.owner.username" class="font-weight-bold username">
+                        {{ data.owner.first_name + ' ' + data.owner.last_name }}
+                    </router-link>
                 </p>
                 <p class="mb-0">
                     <a href="#" class="small date">{{ data.created_at | date }}</a>
@@ -28,12 +29,12 @@
         <carousel v-if="data.images.length" :srcs="data.images"></carousel>
 
         <div class="d-flex mx-auto mt-3">
-            <favorite :favoritableType="'post'" :favoritable="data"></favorite>
-            <span class="mr-4">
+            <favorite :favoritableType="'post'" :favoritable="data" data-toggle="tooltip" data-placement="bottom" title="Favorites"></favorite>
+            <span class="mr-4" data-toggle="tooltip" data-placement="bottom" title="Comments">
                 <img src="/images/comment.png" class="post-action" @click="focusOnCommentsInput">
                 <small>{{ commentsCount }}</small>
             </span>
-            <span>
+            <span data-toggle="tooltip" data-placement="bottom" title="Shares">
                 <img src="/images/share.png" class="post-action">
                 <small>14</small>
             </span>
@@ -72,6 +73,10 @@
             focusOnCommentsInput() {
                 this.$refs.newComment.$refs.socialTextarea.focus();
             }
+        },
+
+        mounted() {
+            $('[data-toggle="tooltip"]').tooltip();
         },
 
         computed: {

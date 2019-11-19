@@ -8,18 +8,20 @@
     import SinglePost from './SinglePost.vue';
     import Collection from '../mixins/Collection';
     import Event from '../shared/event';
-    import api from '../shared/api';
 
     export default {
         components: {SinglePost},
 
+        props: ['posts'],
+
         mixins: [Collection],
 
         created() {
-            this.fetch();
+            this.items = this.posts;
 
             Event.listen('post-created', post => {
                 post.comments = [];
+                post.favorites_count = 0;
                 this.add(post);
             });
 
@@ -37,13 +39,10 @@
             });
         },
 
-        methods: {
-            async fetch() {
-                try {
-                    const response = await axios[api.post.all.method](api.post.all.url());
-                    this.items = response.data;
-                } catch (error) {}
-            }
+        beforeDestroy() {
+            Event.stopListening('post-created');
+            Event.stopListening('post-updated');
+            Event.stopListening('post-deleted');
         }
     }
 </script>

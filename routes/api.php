@@ -25,4 +25,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/comments/{comment}/favorites', 'CommentFavoriteController@store');
     Route::delete('/comments/{comment}/favorites', 'CommentFavoriteController@destroy');
+
+    Route::get('/profile/{user}', 'ProfileController@show');
+    Route::patch('/profile/{user}', 'ProfileController@update');
 });

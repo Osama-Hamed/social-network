@@ -1,7 +1,7 @@
 <template>
     <textarea
         class="form-control w-100 shadow-none"
-        placeholder="Have something to say..."
+        :placeholder="placeholder ? placeholder : 'Have something to say...'"
         :class="{ 'p-3': hasPadding, 'border-0': !hasBorder }"
         :style="{ height: height }"
         :rows="rowsCount"
@@ -11,7 +11,7 @@
 
 <script>
     export default {
-        props: ['value', 'initialRowsCount', 'hasPadding', 'hasBorder'],
+        props: ['value', 'initialRowsCount', 'hasPadding', 'hasBorder', 'placeholder'],
 
         data() {
             return {

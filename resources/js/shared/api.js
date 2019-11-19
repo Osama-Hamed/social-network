@@ -87,5 +87,20 @@ export default {
                 return '/api/' + type + 's/' + id + '/favorites';
             }
         }
+    },
+
+    profile: {
+        show: {
+            method: 'get',
+            url(username) {
+                return '/api/profile/' + username;
+            }
+        },
+        update: {
+            method: 'patch',
+            url(username) {
+                return '/api/profile/' + username
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="card border-0 mb-4">
+    <div class="card mb-4">
         <div class="card-body p-0">
             <form @submit.prevent="publish">
                 <div class="form-group mb-0">
@@ -17,12 +17,12 @@
 
                 <div class="form-group pl-4 py-2 mb-0">
                     <button class="btn mr-3 action py-1">
-                        <img src="images/send.png" width="20" height="20" class="mr-1">
+                        <img src="/images/send.png" width="20" height="20" class="mr-1">
                         <small class="font-weight-bold">Post</small>
                     </button>
 
                     <label for="file-input" class="btn mb-0 action py-1">
-                        <img src="images/upload.png" width="20" height="20" class="mr-1">
+                        <img src="/images/upload.png" width="20" height="20" class="mr-1">
                         <small class="font-weight-bold">Upload</small>
                     </label>
 

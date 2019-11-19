@@ -10,7 +10,8 @@ class Comment extends Model
 	use Favoritable;
 
     protected $fillable = ['user_id', 'body'];
-    protected $appends = ['favoritesCount', 'isFavorited'];
+    protected $withCount = ['favorites'];
+    protected $appends = ['isFavorited'];
 
     public function owner()
     {

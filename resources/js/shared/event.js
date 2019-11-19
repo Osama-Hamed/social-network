@@ -12,4 +12,8 @@ export default new class {
     listen(event, callback) {
         this.vue.$on(event, callback);
     }
+
+    stopListening(event) {
+    	this.vue.$off(event);
+    }
 }

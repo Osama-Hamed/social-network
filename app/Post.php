@@ -14,7 +14,8 @@ class Post extends Model
     protected $fillable = ['user_id', 'body', 'images'];
     protected $casts = ['images' => 'array'];
     protected $with = ['owner', 'comments.owner'];
-    protected $appends = ['encodedImages', 'favoritesCount', 'isFavorited'];
+    protected $withCount = ['comments', 'favorites'];
+    protected $appends = ['encodedImages', 'isFavorited'];
 
     public function owner()
     {

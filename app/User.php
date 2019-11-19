@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'gender', 'birthday'
+        'first_name', 'last_name', 'username', 'email', 'password', 'gender', 'birthday', 'bio', 'country', 'city'
     ];
 
     /**
@@ -26,7 +26,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'email'
     ];
 
     /**
@@ -46,5 +46,15 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }

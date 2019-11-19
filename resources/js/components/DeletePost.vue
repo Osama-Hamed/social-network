@@ -7,7 +7,7 @@
                         <div class="card-body">
                             <p class="lead">Are you sure you want to delete this post?</p>
                             <button class="btn action" @click="destroy">
-                                <img src="images/send.png" width="20" height="20" class="mr-1">
+                                <img src="/images/send.png" width="20" height="20" class="mr-1">
                                 <small class="font-weight-bold">Delete</small>
                             </button>
                             <button class="btn action float-right" @click.prevent="$emit('cancel')">

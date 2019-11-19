@@ -29,6 +29,7 @@ class StoreUserRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|alpha_dash|unique:users',
             'email' => 'required|string|email|max:255|unique:users|confirmed',
             'password' => 'required|string|min:8|max:32|confirmed',
             'birthday' => 'required|string|date_format:d/m/Y',
@@ -42,6 +43,9 @@ class StoreUserRequest extends FormRequest
 
         $data['password'] = Hash::make($data['password']);
         $data['birthday'] = Carbon::createFromFormat('d/m/Y', $data['birthday']);
+        $data['country'] = geoip()->getLocation($this->ip())['country'];
+        $data['state'] = geoip()->getLocation($this->ip())['state'];
+        $data['city'] = geoip()->getLocation($this->ip())['city'];
 
         return User::create($data);
     }

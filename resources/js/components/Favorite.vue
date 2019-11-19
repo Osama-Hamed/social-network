@@ -12,7 +12,7 @@
 		props: ['favoritable', 'favoritableType'],
 		data() {
 			return {
-				count: this.favoritable.favoritesCount,
+				count: this.favoritable.favorites_count,
 				active: this.favoritable.isFavorited
 			}
 		},

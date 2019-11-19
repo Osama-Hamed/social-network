@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
 </head>
 <body>
-<div id="app" v-cloak>
+<div id="app">
     <social-nav :signed-in="signedIn" :auth-user="authUser"></social-nav>
 
     <div class="container">
-        <router-view></router-view>
+        <router-view :key="$route.params.username"></router-view>
     </div>
 </div>
 

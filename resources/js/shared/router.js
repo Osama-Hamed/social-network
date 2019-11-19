@@ -26,6 +26,34 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/profile/:username',
+        component: require('../pages/Profile.vue').default,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+                path: '',
+                name: 'profile',
+                component: require('../components/Timeline.vue').default,
+            },
+            {
+                path: 'timeline',
+                name: 'timeline',
+                component: require('../components/Timeline.vue').default,
+            },
+            {
+                path: 'friends',
+                name: 'friends',
+                component: require('../components/FriendsList.vue').default,
+            },{
+                path: 'photos',
+                name: 'photos',
+                component: require('../components/PhotosList.vue').default,
+            }
+        ]
     }
 ];
 
