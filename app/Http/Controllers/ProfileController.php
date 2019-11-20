@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Http\Requests\UpdateProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -15,12 +16,8 @@ class ProfileController extends Controller
     	], 200);
     }
 
-    public function update(User $user)
+    public function update(UpdateProfileRequest $form, User $user)
     {
-    	$this->authorize('update', $user);
-
-        $user->update(request()->validate(['bio' => 'nullable|string|max:101']));
-
-        return response()->json($user, 200);
+        return response()->json($form->save(), 200);
     }
 }

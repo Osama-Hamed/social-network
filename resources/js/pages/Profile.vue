@@ -3,16 +3,24 @@
 		<div class="col-lg-9 offset-lg-1">
 			<div class="card px-4 pt-4 mb-4">
 				<div class="media">
-					<img src="/images/avatar.png" class="mr-3 big-profile-image">
+					<div class="d-flex flex-column">
+						<img :src="profileUser.avatarPath" class="mr-3 big-profile-image">
 
-					<div class="media-body">
+						<label for="profile-image-input" class="btn mb-0 mt-3 action py-1" v-if="canBeUpdated">
+	                        <img src="/images/upload.png" width="20" height="20" class="mr-1">
+	                        <small class="font-weight-bold">Change Picture</small>
+	                    </label>
+	                    <input id="profile-image-input" type="file" @change="onAvatarChange($event)" v-if="canBeUpdated">
+					</div>
+
+					<div class="media-body ml-4">
 						<h3 class="mt-3 font-weight-bold">{{ profileUser.username }}</h3>
 
 			            <!--  -->
 		            	<div v-if="editingBio">
-		            		<p class="small text-danger mb-0" v-if="form.errors.has('bio')">{{form.errors.get('bio') }}</p>
+		            		<p class="small text-danger mb-0" v-if="bioForm.errors.has('bio')">{{bioForm.errors.get('bio') }}</p>
 							<social-textarea
-				                v-model="form.bio"
+				                v-model="bioForm.bio"
 				                ref="socialTextarea"
 				                :placeholder="'Add a short bio...'"
 				                :initialRowsCount="1"
@@ -22,7 +30,7 @@
 				            	Press enter to post. 
 				            	<a href="#" @click.prevent="editingBio = false">cancel</a>
 				            </small>
-				            <small class="float-right">{{ 101 - form.bio.length }}</small>
+				            <small class="float-right">{{ 101 - bioForm.bio.length }}</small>
 		            	</div>
 			            <!--  -->
 
@@ -122,7 +130,8 @@
 				commentsCount: 0,
 				friendsCount: 0,
 				editingBio: false,
-				form: new Form({bio: ''}),
+				bioForm: new Form({bio: ''}),
+				avatarForm: new Form({avatar: ''}),
 				isReady: false
 			}
 		},
@@ -140,18 +149,45 @@
 					this.postsCount = response.data.profilePosts.length;
 					this.items.forEach(item => this.commentsCount += item.comments_count);
 					this.items.forEach(item => this.favoritesCount += item.favorites_count);
-					this.form.bio = response.data.profileUser.bio ? response.data.profileUser.bio : '';
+					this.bioForm.bio = response.data.profileUser.bio ? response.data.profileUser.bio : '';
 					this.isReady = true;
 				} catch (error) {}
 			},
 
 			async updateBio() {
                 try {
-                    const response = await this.form[api.profile.update.method](api.profile.update.url(this.profileUser.username));
+                    const response = await this.bioForm[api.profile.update.method](api.profile.update.url(this.profileUser.username));
                     this.profileUser.bio = response.data.bio ? response.data.bio : '';
-                    this.form.bio = response.data.bio ? response.data.bio : '';
+                    this.bioForm.bio = response.data.bio ? response.data.bio : '';
                     this.editingBio = false;
                 } catch (error) {}
+            },
+
+            onAvatarChange(e) {
+        		let files = e.target.files;
+	            if (!files.length) return;
+                let reader = new FileReader();
+                reader.onload = e => {
+                	this.avatarForm.avatar = e.target.result;
+                	this.updateAvatar();
+                }
+                reader.readAsDataURL(files[0]);
+            },
+
+            async updateAvatar() {
+            	try {
+            		const response = await this.avatarForm[api.profile.update.method](api.profile.update.url(this.profileUser.username));
+            		this.profileUser.avatar = response.data.avatar;
+            		this.profileUser.avatarPath = response.data.avatarPath;
+            		window.authUser.avatarPath = response.data.avatarPath;
+
+            		this.$nextTick(() => {
+            			this.isReady = false;
+            			this.commentsCount = 0;
+            			this.favoritesCount = 0;
+            			this.fetch();
+            		});
+            	} catch (error) {}
             }
 		},
 

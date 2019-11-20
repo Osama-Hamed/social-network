@@ -43,8 +43,8 @@ class StoreUserRequest extends FormRequest
 
         $data['password'] = Hash::make($data['password']);
         $data['birthday'] = Carbon::createFromFormat('d/m/Y', $data['birthday']);
+        $data['avatar'] = 'default.png';
         $data['country'] = geoip()->getLocation($this->ip())['country'];
-        $data['state'] = geoip()->getLocation($this->ip())['state'];
         $data['city'] = geoip()->getLocation($this->ip())['city'];
 
         return User::create($data);

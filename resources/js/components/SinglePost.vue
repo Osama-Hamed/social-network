@@ -1,7 +1,7 @@
 <template>
     <div class="card mb-4 pb-4">
         <div class="media mx-4 mt-3">
-            <img :src="'/images/' + data.owner.avatar" class="mr-3 medium-profile-image">
+            <img :src="data.owner.avatarPath" class="mr-3 medium-profile-image">
             <div class="media-body my-auto">
                 <p class="mb-0 ">
                     <router-link :to="'/profile/' + data.owner.username" class="font-weight-bold username">

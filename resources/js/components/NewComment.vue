@@ -1,6 +1,6 @@
 <template>
     <div class="media mx-4 mt-3">
-        <img src="/images/avatar.png" class="mr-3 small-profile-image">
+        <img :src="authAvatar" class="mr-3 small-profile-image">
 
         <div class="media-body my-auto">
             <social-textarea
@@ -38,6 +38,12 @@
                     const response = await this.form[api.comment.create.method](api.comment.create.url(this.postId));
                     Event.fire('comment-created', response.data);
                 } catch (error) {}
+            }
+        },
+
+        computed: {
+            authAvatar() {
+                return window.authUser.avatarPath;
             }
         }
     }

@@ -10647,9 +10647,8 @@ a.text-dark:focus {
 html,
 body {
   background-color: #F6F6F6;
-  color: #8D8C8A;
+  color: #404040;
   font-family: "Nunito", sans-serif;
-  overflow: overlay;
 }
 
 .navbar {
@@ -10691,7 +10690,7 @@ a:hover {
 }
 
 a.date {
-  color: #8D8C8A;
+  color: #4d4d4c;
 }
 
 .submit-button,
@@ -10708,7 +10707,7 @@ textarea {
 .action {
   border-radius: 2rem;
   background-color: #F6F6F6;
-  color: #8D8C8A;
+  color: #4d4d4c;
   cursor: pointer;
 }
 
@@ -10720,12 +10719,12 @@ textarea {
 .post-content,
 .comment-content {
   white-space: pre-wrap;
-  color: #363538;
+  color: #000000;
 }
 
 .border-bottom-only {
   border: 0;
-  border-bottom: 1px solid #8D8C8A;
+  border-bottom: 1px solid #4d4d4c;
   border-radius: 0;
 }
 
@@ -10739,7 +10738,8 @@ textarea {
 }
 
 #file-input,
-#edit-file-input {
+#edit-file-input,
+#profile-image-input {
   display: none;
 }
 

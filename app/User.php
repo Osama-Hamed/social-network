@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -17,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'username', 'email', 'password', 'gender', 'birthday', 'bio', 'country', 'city'
+        'first_name', 'last_name', 'username', 'email', 'password', 'gender', 'birthday', 'bio', 'country', 'city', 'avatar'
     ];
 
     /**
@@ -38,6 +39,8 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['avatarPath'];
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -56,5 +59,15 @@ class User extends Authenticatable implements JWTSubject
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function getAvatarPathAttribute()
+    {
+        return "/storage/avatars/$this->avatar";
+    }
+
+    public function removeAvatar()
+    {
+        if ($this->avatar !== 'default.png') Storage::disk('public')->delete("avatars/$this->avatar");
     }
 }

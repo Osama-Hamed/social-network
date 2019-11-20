@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->date('birthday');
             $table->string('gender');
-            $table->string('avatar')->default('avatar.png');
+            $table->string('avatar');
             $table->string('country');
             $table->string('city');
             $table->string('bio', 101)->nullable();

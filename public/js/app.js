@@ -2578,6 +2578,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return add;
     }()
+  },
+  computed: {
+    authAvatar: function authAvatar() {
+      return window.authUser.avatarPath;
+    }
   }
 });
 
@@ -3346,6 +3351,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return fetch;
     }()
+  },
+  computed: {
+    authAvatar: function authAvatar() {
+      return window.authUser.avatarPath;
+    },
+    authName: function authName() {
+      return window.authUser.username;
+    }
   }
 });
 
@@ -3601,6 +3614,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3619,8 +3640,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       commentsCount: 0,
       friendsCount: 0,
       editingBio: false,
-      form: new _shared_form__WEBPACK_IMPORTED_MODULE_5__["default"]({
+      bioForm: new _shared_form__WEBPACK_IMPORTED_MODULE_5__["default"]({
         bio: ''
+      }),
+      avatarForm: new _shared_form__WEBPACK_IMPORTED_MODULE_5__["default"]({
+        avatar: ''
       }),
       isReady: false
     };
@@ -3655,7 +3679,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.items.forEach(function (item) {
                   return _this.favoritesCount += item.favorites_count;
                 });
-                this.form.bio = response.data.profileUser.bio ? response.data.profileUser.bio : '';
+                this.bioForm.bio = response.data.profileUser.bio ? response.data.profileUser.bio : '';
                 this.isReady = true;
                 _context.next = 15;
                 break;
@@ -3689,12 +3713,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context2.prev = 0;
                 _context2.next = 3;
-                return this.form[_shared_api__WEBPACK_IMPORTED_MODULE_1__["default"].profile.update.method](_shared_api__WEBPACK_IMPORTED_MODULE_1__["default"].profile.update.url(this.profileUser.username));
+                return this.bioForm[_shared_api__WEBPACK_IMPORTED_MODULE_1__["default"].profile.update.method](_shared_api__WEBPACK_IMPORTED_MODULE_1__["default"].profile.update.url(this.profileUser.username));
 
               case 3:
                 response = _context2.sent;
                 this.profileUser.bio = response.data.bio ? response.data.bio : '';
-                this.form.bio = response.data.bio ? response.data.bio : '';
+                this.bioForm.bio = response.data.bio ? response.data.bio : '';
                 this.editingBio = false;
                 _context2.next = 11;
                 break;
@@ -3716,6 +3740,69 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return updateBio;
+    }(),
+    onAvatarChange: function onAvatarChange(e) {
+      var _this2 = this;
+
+      var files = e.target.files;
+      if (!files.length) return;
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        _this2.avatarForm.avatar = e.target.result;
+
+        _this2.updateAvatar();
+      };
+
+      reader.readAsDataURL(files[0]);
+    },
+    updateAvatar: function () {
+      var _updateAvatar = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var _this3 = this;
+
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return this.avatarForm[_shared_api__WEBPACK_IMPORTED_MODULE_1__["default"].profile.update.method](_shared_api__WEBPACK_IMPORTED_MODULE_1__["default"].profile.update.url(this.profileUser.username));
+
+              case 3:
+                response = _context3.sent;
+                this.profileUser.avatar = response.data.avatar;
+                this.profileUser.avatarPath = response.data.avatarPath;
+                window.authUser.avatarPath = response.data.avatarPath;
+                this.$nextTick(function () {
+                  _this3.isReady = false;
+                  _this3.commentsCount = 0;
+                  _this3.favoritesCount = 0;
+
+                  _this3.fetch();
+                });
+                _context3.next = 12;
+                break;
+
+              case 10:
+                _context3.prev = 10;
+                _context3.t0 = _context3["catch"](0);
+
+              case 12:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[0, 10]]);
+      }));
+
+      function updateAvatar() {
+        return _updateAvatar.apply(this, arguments);
+      }
+
+      return updateAvatar;
     }()
   },
   computed: {
@@ -45566,7 +45653,7 @@ var render = function() {
   return _c("div", { staticClass: "media mx-4 mt-3" }, [
     _c("img", {
       staticClass: "mr-3 small-profile-image",
-      attrs: { src: "/images/avatar.png" }
+      attrs: { src: _vm.authAvatar }
     }),
     _vm._v(" "),
     _c(
@@ -45852,7 +45939,7 @@ var render = function() {
       [
         _c("img", {
           staticClass: "mr-3 small-profile-image",
-          attrs: { src: "/images/" + _vm.data.owner.avatar }
+          attrs: { src: _vm.data.owner.avatarPath }
         }),
         _vm._v(" "),
         _c(
@@ -46011,7 +46098,7 @@ var render = function() {
       _c("div", { staticClass: "media mx-4 mt-3" }, [
         _c("img", {
           staticClass: "mr-3 medium-profile-image",
-          attrs: { src: "/images/" + _vm.data.owner.avatar }
+          attrs: { src: _vm.data.owner.avatarPath }
         }),
         _vm._v(" "),
         _c("div", { staticClass: "media-body my-auto" }, [
@@ -46299,7 +46386,7 @@ var render = function() {
                             [
                               _c("img", {
                                 staticClass: "small-profile-image",
-                                attrs: { src: "/images/" + _vm.authUser.avatar }
+                                attrs: { src: _vm.authUser.avatarPath }
                               }),
                               _vm._v(
                                 "\n                        " +
@@ -46584,7 +46671,26 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _vm._m(0),
+    _c("div", { staticClass: "col-lg-3" }, [
+      _c("div", { staticClass: "card mb-4" }, [
+        _c("img", {
+          staticClass: "card-img-top mx-auto d-block mt-4 big-profile-image",
+          attrs: { src: _vm.authAvatar }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body text-center mt-2" }, [
+          _c(
+            "a",
+            { staticClass: "username font-weight-bold", attrs: { href: "#" } },
+            [_vm._v(_vm._s(_vm.authName))]
+          ),
+          _vm._v(" "),
+          _c("p", { staticClass: "card-text mt-2" }, [
+            _vm._v("Lorem ipsum dolor sit amet, consectetur adipisicing elit.")
+          ])
+        ])
+      ])
+    ]),
     _vm._v(" "),
     _c(
       "div",
@@ -46607,35 +46713,10 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _vm._m(1)
+    _vm._m(0)
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-3" }, [
-      _c("div", { staticClass: "card mb-4" }, [
-        _c("img", {
-          staticClass: "card-img-top mx-auto d-block mt-4 big-profile-image",
-          attrs: { src: "images/avatar.png" }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body text-center mt-2" }, [
-          _c(
-            "a",
-            { staticClass: "username font-weight-bold", attrs: { href: "#" } },
-            [_vm._v("#OSAMA_HAMED")]
-          ),
-          _vm._v(" "),
-          _c("p", { staticClass: "card-text mt-2" }, [
-            _vm._v("Lorem ipsum dolor sit amet, consectetur adipisicing elit.")
-          ])
-        ])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -46650,7 +46731,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "media mb-3" }, [
             _c("img", {
               staticClass: "mr-2 small-profile-image",
-              attrs: { src: "images/avatar.png" }
+              attrs: { src: "/storage/avatars/default.png" }
             }),
             _vm._v(" "),
             _c("div", { staticClass: "media-body my-auto small" }, [
@@ -46668,7 +46749,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "media mb-3" }, [
             _c("img", {
               staticClass: "mr-2 small-profile-image",
-              attrs: { src: "images/avatar.png" }
+              attrs: { src: "/storage/avatars/default.png" }
             }),
             _vm._v(" "),
             _c("div", { staticClass: "media-body my-auto small" }, [
@@ -46686,7 +46767,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "media" }, [
             _c("img", {
               staticClass: "mr-2 small-profile-image",
-              attrs: { src: "images/avatar.png" }
+              attrs: { src: "/storage/avatars/default.png" }
             }),
             _vm._v(" "),
             _c("div", { staticClass: "media-body my-auto small" }, [
@@ -46712,7 +46793,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "media mb-3" }, [
             _c("img", {
               staticClass: "mr-2 small-profile-image",
-              attrs: { src: "images/avatar.png" }
+              attrs: { src: "/storage/avatars/default.png" }
             }),
             _vm._v(" "),
             _c("div", { staticClass: "media-body my-auto small" }, [
@@ -46735,7 +46816,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "media mb-3" }, [
             _c("img", {
               staticClass: "mr-2 small-profile-image",
-              attrs: { src: "images/avatar.png" }
+              attrs: { src: "/storage/avatars/default.png" }
             }),
             _vm._v(" "),
             _c("div", { staticClass: "media-body my-auto small" }, [
@@ -46758,7 +46839,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "media mb-3" }, [
             _c("img", {
               staticClass: "mr-2 small-profile-image",
-              attrs: { src: "images/avatar.png" }
+              attrs: { src: "/storage/avatars/default.png" }
             }),
             _vm._v(" "),
             _c("div", { staticClass: "media-body my-auto small" }, [
@@ -46962,12 +47043,49 @@ var render = function() {
       _c("div", { staticClass: "col-lg-9 offset-lg-1" }, [
         _c("div", { staticClass: "card px-4 pt-4 mb-4" }, [
           _c("div", { staticClass: "media" }, [
-            _c("img", {
-              staticClass: "mr-3 big-profile-image",
-              attrs: { src: "/images/avatar.png" }
-            }),
+            _c("div", { staticClass: "d-flex flex-column" }, [
+              _c("img", {
+                staticClass: "mr-3 big-profile-image",
+                attrs: { src: _vm.profileUser.avatarPath }
+              }),
+              _vm._v(" "),
+              _vm.canBeUpdated
+                ? _c(
+                    "label",
+                    {
+                      staticClass: "btn mb-0 mt-3 action py-1",
+                      attrs: { for: "profile-image-input" }
+                    },
+                    [
+                      _c("img", {
+                        staticClass: "mr-1",
+                        attrs: {
+                          src: "/images/upload.png",
+                          width: "20",
+                          height: "20"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("small", { staticClass: "font-weight-bold" }, [
+                        _vm._v("Change Picture")
+                      ])
+                    ]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.canBeUpdated
+                ? _c("input", {
+                    attrs: { id: "profile-image-input", type: "file" },
+                    on: {
+                      change: function($event) {
+                        return _vm.onAvatarChange($event)
+                      }
+                    }
+                  })
+                : _vm._e()
+            ]),
             _vm._v(" "),
-            _c("div", { staticClass: "media-body" }, [
+            _c("div", { staticClass: "media-body ml-4" }, [
               _c("h3", { staticClass: "mt-3 font-weight-bold" }, [
                 _vm._v(_vm._s(_vm.profileUser.username))
               ]),
@@ -46976,9 +47094,9 @@ var render = function() {
                 ? _c(
                     "div",
                     [
-                      _vm.form.errors.has("bio")
+                      _vm.bioForm.errors.has("bio")
                         ? _c("p", { staticClass: "small text-danger mb-0" }, [
-                            _vm._v(_vm._s(_vm.form.errors.get("bio")))
+                            _vm._v(_vm._s(_vm.bioForm.errors.get("bio")))
                           ])
                         : _vm._e(),
                       _vm._v(" "),
@@ -47016,11 +47134,11 @@ var render = function() {
                           }
                         },
                         model: {
-                          value: _vm.form.bio,
+                          value: _vm.bioForm.bio,
                           callback: function($$v) {
-                            _vm.$set(_vm.form, "bio", $$v)
+                            _vm.$set(_vm.bioForm, "bio", $$v)
                           },
-                          expression: "form.bio"
+                          expression: "bioForm.bio"
                         }
                       }),
                       _vm._v(" "),
@@ -47044,7 +47162,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("small", { staticClass: "float-right" }, [
-                        _vm._v(_vm._s(101 - _vm.form.bio.length))
+                        _vm._v(_vm._s(101 - _vm.bioForm.bio.length))
                       ])
                     ],
                     1
