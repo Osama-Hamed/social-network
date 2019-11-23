@@ -4,16 +4,19 @@ namespace App\Traits;
 
 use App\Favorite;
 
-trait Favoritable {
+trait Favoritable
+{
+    protected static function bootFavoritable()
+    {
+        static::deleted(function ($model) {
+            $model->favorites->each->delete();
+        });
+    }
+
 	public function favorites()
     {
         return $this->morphMany(Favorite::class, 'favoritable');
     }
-
-    // public function getFavoritesCountAttribute()
-    // {
-    //     return $this->favorites()->count();
-    // }
 
     public function getIsFavoritedAttribute()
     {
