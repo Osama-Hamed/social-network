@@ -54,7 +54,7 @@
                         <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
                         <div class="media-body my-auto small">
                             <a href="#" class="font-weight-bold d-inline-block mt-1">Osama Hamed</a>
-                            <img src="images/add.png" class="float-right" width="25" height="25">
+                            <button class="float-right btn btn-sm action py-0">add friend</button>
                         </div>
                     </div>
 
@@ -62,7 +62,7 @@
                         <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
                         <div class="media-body my-auto small">
                             <a href="#" class="font-weight-bold d-inline-block mt-1">Osama Hamed</a>
-                            <img src="images/add.png" class="float-right" width="25" height="25">
+                            <button class="float-right btn btn-sm action py-0">add friend</button>
                         </div>
                     </div>
 
@@ -70,7 +70,7 @@
                         <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
                         <div class="media-body my-auto small">
                             <a href="#" class="font-weight-bold d-inline-block mt-1">Osama Hamed</a>
-                            <img src="images/add.png" class="float-right" width="25" height="25">
+                            <button class="float-right btn btn-sm action py-0">add friend</button>
                         </div>
                     </div>
                 </div>

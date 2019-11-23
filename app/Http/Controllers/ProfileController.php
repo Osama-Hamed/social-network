@@ -12,7 +12,11 @@ class ProfileController extends Controller
     	return response()->json([
     		'profileUser' => $user,
     		'profilePosts' => $user->posts()->latest()->get(),
-            'ip' => geoip()
+            'friendship' => [
+                'isEstablished' => auth()->user()->isFriendOf($user),
+                'isRecieved' => auth()->user()->hasFriendRequestFrom($user),
+                'isSent' => auth()->user()->sentFriendRequestTo($user)
+            ]
     	], 200);
     }
 

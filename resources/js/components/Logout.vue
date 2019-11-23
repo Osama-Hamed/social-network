@@ -1,7 +1,7 @@
 <template>
     <li class="nav-item">
-        <a href="#" class="nav-link" @click.prevent="logout">
-            <img src="/images/logout.png" width="22" height="22">
+        <a href="#" class="bold-link nav-link" @click.prevent="logout">
+            Logout
         </a>
     </li>
 </template>

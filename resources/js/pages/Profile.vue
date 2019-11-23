@@ -14,7 +14,11 @@
 					</div>
 
 					<div class="media-body ml-4">
-						<h3 class="mt-3 font-weight-bold">{{ profileUser.username }}</h3>
+						<div class="d-flex flex-wrap align-items-center">
+							<h4 class="mt-3 font-weight-bold">{{ profileUser.username }}</h4>
+
+		                    <friendship :data="friendship" :profile-user="profileUser.username" v-if="isReady && canBeFriend"></friendship>
+						</div>
 
 			            <!--  -->
 		            	<div v-if="editingBio">
@@ -36,18 +40,18 @@
 
 			            <!--  -->
 			            <div v-if="canBeUpdated && !profileUser.bio && !editingBio">
-			            	<a href="#" @click.prevent="editingBio = true">Add bio</a>
+			            	<a href="#" @click.prevent="editingBio = true" class="font-weight-bold">Add bio</a>
 			            </div>
 
 			            <div v-if="canBeUpdated && profileUser.bio && !editingBio" class="d-flex flex-wrap align-items-center">
 			            	<img src="/images/information.png">
-			            	<p class="mb-0 mr-2 ml-2">Bio  <b>{{ profileUser.bio }}</b></p>
+			            	<p class="mb-0 mr-2 ml-2">Bio {{ profileUser.bio }}</p>
 							<img src="/images/edit.png" class="post-action" @click="editingBio = true">
 			            </div>
 
 			            <div v-if="!canBeUpdated && profileUser.bio" class="d-flex flex-wrap align-items-center">
 			            	<img src="/images/information.png">
-			            	<p class="mb-0 mr-2 ml-2">Bio <b>{{ profileUser.bio }}</b></p>
+			            	<p class="mb-0 mr-2 ml-2">Bio {{ profileUser.bio }}</p>
 			            </div>
 			            <!--  -->
 
@@ -55,14 +59,14 @@
 				            <img src="/images/location.png">
 				            <p class="mb-0 ml-2">
 				            	From
-				            	<b>{{ profileUser.city + ', ' + profileUser.country }}.</b>
+				            	{{ profileUser.city + ', ' + profileUser.country }}.
 				        	</p>
 			            </div>
 
 			            <div class="d-flex flex-wrap align-items-center">
 							<img src="/images/calendar.png" class="">
 							<p class="mb-0 ml-2">
-								Member since <b>{{ profileUser.created_at | membership }}</b>.
+								Member since {{ profileUser.created_at | membership }}.
 							</p>
 						</div>
 
@@ -70,15 +74,15 @@
 				            <img src="/images/cake.png">
 				            <p class="mb-0 ml-2">
 				            	Birthday
-				            	<b>{{ profileUser.birthday | birthday }}.</b>
+				            	{{ profileUser.birthday | birthday }}.
 				        	</p>
 			            </div>
 
 						<div class="d-flex mt-3">
-							<small class="mr-3 font-weight-bold">{{ postsCount }} {{ 'post' | pluralize(postsCount) }}</small>
-							<small class="mr-3 font-weight-bold">{{ favoritesCount }} {{ 'favorite' | pluralize(favoritesCount) }}</small>
-							<small class="mr-3 font-weight-bold">{{ commentsCount }} {{ 'comment' | pluralize(commentsCount) }}</small>
-							<small class="font-weight-bold">20 friends</small>
+							<small class="mr-3 ">{{ postsCount }} {{ 'post' | pluralize(postsCount) }}</small>
+							<small class="mr-3 ">{{ favoritesCount }} {{ 'favorite' | pluralize(favoritesCount) }}</small>
+							<small class="mr-3 ">{{ commentsCount }} {{ 'comment' | pluralize(commentsCount) }}</small>
+							<small class="">20 friends</small>
 						</div>
 
 						<ul class="nav nav-tabs nav-fill font-weight-bold mt-2 border-bottom-0" v-if="isReady">
@@ -116,9 +120,10 @@
 	import moment from 'moment';
 	import SocialTextarea from '../components/SocialTextarea.vue';
 	import Form from '../shared/form';
+	import Friendship from '../components/Friendship.vue'
 
 	export default {
-		components: {SocialTextarea},
+		components: {SocialTextarea, Friendship},
 
 		mixins: [Collection],
 
@@ -132,6 +137,7 @@
 				editingBio: false,
 				bioForm: new Form({bio: ''}),
 				avatarForm: new Form({avatar: ''}),
+				friendship: null,
 				isReady: false
 			}
 		},
@@ -150,6 +156,7 @@
 					this.items.forEach(item => this.commentsCount += item.comments_count);
 					this.items.forEach(item => this.favoritesCount += item.favorites_count);
 					this.bioForm.bio = response.data.profileUser.bio ? response.data.profileUser.bio : '';
+					this.friendship = response.data.friendship;
 					this.isReady = true;
 				} catch (error) {}
 			},
@@ -194,6 +201,10 @@
 		computed: {
 			canBeUpdated() {
 				return window.authUser.id === this.profileUser.id;
+			},
+
+			canBeFriend() {
+				return window.authUser.id !== this.profileUser.id;
 			},
 
 			encodedImages() {

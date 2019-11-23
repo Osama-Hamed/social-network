@@ -28,4 +28,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/profile/{user}', 'ProfileController@show');
     Route::patch('/profile/{user}', 'ProfileController@update');
+
+    Route::post('/friends', 'FriendshipController@store');
+    Route::patch('/friends/{user}', 'FriendshipController@update');
+    Route::delete('/friends/{user}', 'FriendshipController@destroy');
 });

@@ -102,5 +102,28 @@ export default {
                 return '/api/profile/' + username
             }
         }
+    },
+
+    friendship: {
+        create: {
+            method: 'post',
+            url() {
+                return '/api/friends';
+            }
+        },
+
+        update: {
+            method: 'patch',
+            url(username) {
+                return '/api/friends/' + username;
+            }
+        },
+
+        delete: {
+            method: 'delete',
+            url(username) {
+                return '/api/friends/' + username;
+            }
+        }
     }
 }
