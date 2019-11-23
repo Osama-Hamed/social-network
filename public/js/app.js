@@ -2431,6 +2431,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2441,7 +2443,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['users'],
+  filters: {
+    date: function date(value) {
+      return moment__WEBPACK_IMPORTED_MODULE_0___default()(value).format('LL');
+    }
+  }
+});
 
 /***/ }),
 
@@ -3838,6 +3866,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         avatar: ''
       }),
       friendship: null,
+      profileFriends: null,
       isReady: false
     };
   },
@@ -3872,21 +3901,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return _this.favoritesCount += item.favorites_count;
                 });
                 this.bioForm.bio = response.data.profileUser.bio ? response.data.profileUser.bio : '';
+                this.profileFriends = response.data.profileFriends;
+                this.friendsCount = response.data.profileFriends.length;
                 this.friendship = response.data.friendship;
                 this.isReady = true;
-                _context.next = 16;
+                _context.next = 19;
                 break;
 
-              case 14:
-                _context.prev = 14;
-                _context.t0 = _context["catch"](0);
-
               case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](0);
+                console.log(_context.t0);
+
+              case 19:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 14]]);
+        }, _callee, this, [[0, 16]]);
       }));
 
       function fetch() {
@@ -4026,6 +4058,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (this.$route.name === 'photos') {
         return {
           encodedImages: this.encodedImages
+        };
+      }
+
+      if (this.$route.name === 'friends') {
+        return {
+          users: this.profileFriends
         };
       }
     }
@@ -45768,20 +45806,75 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "col-lg-9 offset-lg-1" }, [
+    _c(
+      "div",
+      { staticClass: "row" },
+      _vm._l(_vm.users, function(user) {
+        return _c("div", { staticClass: "col-lg-4" }, [
+          _c("div", { staticClass: "card" }, [
+            _c("div", { staticClass: "card-body py-2" }, [
+              _c(
+                "div",
+                { staticClass: "media d-flex flex-wrap align-items-center" },
+                [
+                  _c("img", {
+                    staticClass: "mr-3 medium-profile-image",
+                    attrs: { src: user.avatarPath }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "media-body mt-2" }, [
+                    _c(
+                      "p",
+                      { staticClass: "mb-0" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "font-weight-bold username",
+                            attrs: {
+                              to: {
+                                name: "profile",
+                                params: { username: user.username }
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t                        " +
+                                _vm._s(user.first_name + " " + user.last_name) +
+                                "\n\t\t\t\t                    "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "small" }, [
+                      _vm._v(
+                        "since " +
+                          _vm._s(_vm._f("date")(user.friendship.accepted_at))
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ])
+        ])
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _vm.users.length == 0
+      ? _c("p", { staticClass: "font-weight-bold text-center" }, [
+          _vm._v("\n            There is no friends to show.\n    \t")
+        ])
+      : _vm._e()
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-9 offset-lg-1" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", [_vm._v("\n\t\t\tFriends list view\n\t\t")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -46208,7 +46301,12 @@ var render = function() {
                   "router-link",
                   {
                     staticClass: "font-weight-bold username small",
-                    attrs: { to: "/profile/" + _vm.data.owner.username }
+                    attrs: {
+                      to: {
+                        name: "profile",
+                        params: { username: _vm.data.owner.username }
+                      }
+                    }
                   },
                   [
                     _vm._v(
@@ -46364,7 +46462,12 @@ var render = function() {
                 "router-link",
                 {
                   staticClass: "font-weight-bold username",
-                  attrs: { to: "/profile/" + _vm.data.owner.username }
+                  attrs: {
+                    to: {
+                      name: "profile",
+                      params: { username: _vm.data.owner.username }
+                    }
+                  }
                 },
                 [
                   _vm._v(
@@ -47568,7 +47671,13 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("small", {}, [_vm._v("20 friends")])
+                _c("small", {}, [
+                  _vm._v(
+                    _vm._s(_vm.friendsCount) +
+                      " " +
+                      _vm._s(_vm._f("pluralize")("friend", _vm.friendsCount))
+                  )
+                ])
               ]),
               _vm._v(" "),
               _vm.isReady

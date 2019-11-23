@@ -4,7 +4,7 @@
 			<img :src="data.owner.avatarPath" class="mr-3 small-profile-image">
 			<div class="media-body my-auto">
 				<p class="mb-0 ">
-					<router-link :to="'/profile/' + data.owner.username" class="font-weight-bold username small">
+					<router-link :to="{name: 'profile', params: {username: data.owner.username}}" class="font-weight-bold username small">
                         {{ data.owner.first_name + ' ' + data.owner.last_name }}
                     </router-link>
 					<a href="#" class="small date">{{ data.created_at | date }}</a>

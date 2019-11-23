@@ -82,7 +82,7 @@
 							<small class="mr-3 ">{{ postsCount }} {{ 'post' | pluralize(postsCount) }}</small>
 							<small class="mr-3 ">{{ favoritesCount }} {{ 'favorite' | pluralize(favoritesCount) }}</small>
 							<small class="mr-3 ">{{ commentsCount }} {{ 'comment' | pluralize(commentsCount) }}</small>
-							<small class="">20 friends</small>
+							<small class="">{{ friendsCount }} {{ 'friend' | pluralize(friendsCount) }}</small>
 						</div>
 
 						<ul class="nav nav-tabs nav-fill font-weight-bold mt-2 border-bottom-0" v-if="isReady">
@@ -138,6 +138,7 @@
 				bioForm: new Form({bio: ''}),
 				avatarForm: new Form({avatar: ''}),
 				friendship: null,
+				profileFriends: null,
 				isReady: false
 			}
 		},
@@ -156,9 +157,11 @@
 					this.items.forEach(item => this.commentsCount += item.comments_count);
 					this.items.forEach(item => this.favoritesCount += item.favorites_count);
 					this.bioForm.bio = response.data.profileUser.bio ? response.data.profileUser.bio : '';
+					this.profileFriends = response.data.profileFriends;
+					this.friendsCount = response.data.profileFriends.length;
 					this.friendship = response.data.friendship;
 					this.isReady = true;
-				} catch (error) {}
+				} catch (error) {console.log(error)}
 			},
 
 			async updateBio() {
@@ -227,7 +230,11 @@
 
 				if (this.$route.name === 'photos') {
 				 	return {encodedImages: this.encodedImages};
-				}				
+				}
+
+				if (this.$route.name === 'friends') {
+					return {users: this.profileFriends}
+				}
 			}
 		},
 

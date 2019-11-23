@@ -9,6 +9,7 @@ trait Friendable
 	public function friendsSentRequest()
     {
         return $this->belongsToMany(self::class, 'friendships', 'reciever_id', 'sender_id')
+            ->as('friendship')
             ->withPivot('accepted_at')
             ->whereNotNull('accepted_at');
     }
@@ -16,11 +17,12 @@ trait Friendable
     public function friendsRecievedRequest()
     {
         return $this->belongsToMany(self::class, 'friendships', 'sender_id', 'reciever_id')
+            ->as('friendship')
             ->withPivot('accepted_at')
             ->whereNotNull('accepted_at');
     }
 
-    public function friends()
+    public function allFriends()
     {
         return $this->friendsRecievedRequest->merge($this->friendsSentRequest);
     }

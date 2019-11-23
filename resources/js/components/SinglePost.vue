@@ -4,7 +4,7 @@
             <img :src="data.owner.avatarPath" class="mr-3 medium-profile-image">
             <div class="media-body my-auto">
                 <p class="mb-0 ">
-                    <router-link :to="'/profile/' + data.owner.username" class="font-weight-bold username">
+                    <router-link :to="{name: 'profile', params: {username: data.owner.username}}" class="font-weight-bold username">
                         {{ data.owner.first_name + ' ' + data.owner.last_name }}
                     </router-link>
                 </p>
