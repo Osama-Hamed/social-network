@@ -10,7 +10,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        return response()->json(Post::latest('created_at')->get(), 200);
+        return response()->json(auth()->user()->relatedPosts(), 200);
     }
 
     public function store(StorePostRequest $form)

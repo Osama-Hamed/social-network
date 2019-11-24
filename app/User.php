@@ -71,4 +71,13 @@ class User extends Authenticatable implements JWTSubject
     {
         if ($this->avatar !== 'default.png') Storage::disk('public')->delete("avatars/$this->avatar");
     }
+
+    public function relatedPosts()
+    {
+        $ids = $this->friendsSentRequest()->pluck('id')
+            ->merge($this->friendsRecievedRequest()->pluck('id'))
+            ->push($this->id);
+
+        return Post::whereIn('user_id', $ids)->latest()->get();
+    }
 }
