@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Post;
 use App\Http\Requests\UpdateProfileRequest;
 
 class ProfileController extends Controller
@@ -11,7 +12,7 @@ class ProfileController extends Controller
     {
     	return response()->json([
     		'profileUser' => $user,
-    		'profilePosts' => $user->posts()->latest()->get(),
+    		'profilePosts' => $user->profilePosts(),
             'profileFriends' => $user->allFriends(),
             'friendship' => [
                 'isEstablished' => auth()->user()->isFriendOf($user),

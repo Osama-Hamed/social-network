@@ -23,8 +23,9 @@ class UpdatePostRequest extends PostFormRequest
 
             $post->update([
                 'body' => $this->body,
-                'images' => $this->uploadImages()
+                'images' => $this->uploadImages(),
+                'privacy' => $this->privacy
             ]);
-        });
+        })->refresh();
     }
 }

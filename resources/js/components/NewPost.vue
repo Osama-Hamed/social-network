@@ -27,6 +27,12 @@
                     </label>
 
                     <input id="file-input" type="file" @change="encodeImages('images', $event)" multiple>
+
+                    <select class="custom-select custom-select-sm w-25 ml-4" v-model="form.privacy">
+                        <option value="1" selected>Public</option>
+                        <option value="2">Friends</option>
+                        <option value="3">Private</option>
+                    </select>
                 </div>
             </form>
         </div>
@@ -49,7 +55,8 @@
             return {
                 form: new Form({
                     body: '',
-                    images: []
+                    images: [],
+                    privacy: '1'
                 })
             }
         },
@@ -59,6 +66,7 @@
                 try {
                     const response = await this.form[api.post.create.method](api.post.create.url());
                     Event.fire('post-created', response.data);
+                    this.form.privacy = '1';
                 } catch (error) {}
             },
         }

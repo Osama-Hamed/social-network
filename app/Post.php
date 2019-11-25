@@ -11,7 +11,7 @@ class Post extends Model
 {
     use Favoritable;
     
-    protected $fillable = ['user_id', 'body', 'images'];
+    protected $fillable = ['user_id', 'body', 'images', 'privacy'];
     protected $casts = ['images' => 'array'];
     protected $with = ['owner', 'comments.owner'];
     protected $withCount = ['comments', 'favorites'];
@@ -58,5 +58,15 @@ class Post extends Model
             'user_id' => auth()->id(),
             'body' => $body
         ]);
+    }
+
+    public function scopePublic($query)
+    {
+        return $query->where('privacy', 1);
+    }
+
+    public function scopePublicOrFriends($query)
+    {
+        return $query->where('privacy', 1)->orWhere('privacy', 2);
     }
 }

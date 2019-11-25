@@ -21,7 +21,8 @@ class StorePostRequest extends PostFormRequest
         return Post::publish([
             'user_id' => $this->user()->id,
             'body' => $this->body,
-            'images' => $this->uploadImages()
-        ])->load('owner');
+            'images' => $this->uploadImages(),
+            'privacy' => $this->privacy
+        ])->fresh();
     }
 }

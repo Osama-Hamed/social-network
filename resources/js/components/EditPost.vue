@@ -32,6 +32,12 @@
 
                                     <input id="edit-file-input" type="file" @change="encodeImages('images', $event)" multiple>
 
+                                    <select class="custom-select custom-select-sm w-25 ml-4" v-model="form.privacy">
+                                        <option value="1" selected>Public</option>
+                                        <option value="2">Friends</option>
+                                        <option value="3">Private</option>
+                                    </select>
+
                                     <button class="btn action mr-3 py-1 float-right" @click.prevent="$emit('cancel')">
                                         <small class="font-weight-bold">Cancel</small>
                                     </button>
@@ -63,7 +69,8 @@
             return {
                 form: new Form({
                     body: '',
-                    images: []
+                    images: [],
+                    privacy: '1'
                 })
             }
         },
@@ -80,6 +87,9 @@
             showPost() {
                 this.form.body = this.data.body;
                 this.data.encodedImages.forEach((encodedImage) => this.form.images.push(encodedImage.encoded));
+                if (this.data.privacy === 'public') this.form.privacy = '1';
+                if (this.data.privacy === 'friends') this.form.privacy = '2';
+                if (this.data.privacy === 'private') this.form.privacy = '3';
             },
 
             async update() {

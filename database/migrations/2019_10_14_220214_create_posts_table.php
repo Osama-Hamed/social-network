@@ -18,6 +18,7 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->text('body');
             $table->text('images')->nullable();
+            $table->enum('privacy', ['public', 'friends', 'private']);
             $table->timestamps();
         });
     }

@@ -74,10 +74,17 @@ class User extends Authenticatable implements JWTSubject
 
     public function relatedPosts()
     {
-        $ids = $this->friendsSentRequest()->pluck('id')
-            ->merge($this->friendsRecievedRequest()->pluck('id'))
-            ->push($this->id);
+        return $this->posts->merge($this->friendsPosts())->sortByDesc('created_at')->values()->all();
+    }
 
-        return Post::whereIn('user_id', $ids)->latest()->get();
+    public function profilePosts()
+    {
+        $authUser = auth()->user();
+
+        if ($this->is($authUser)) return $this->posts()->latest()->get();
+
+        if ($this->isFriendOf($authUser)) return $this->posts()->publicOrFriends()->latest()->get();
+
+        return $this->posts()->public()->latest()->get();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Carbon\Carbon;
+use App\Post;
 
 trait Friendable
 {
@@ -85,5 +86,13 @@ trait Friendable
     {
         $this->friendsSentRequest()->detach($user);
         $this->friendsRecievedRequest()->detach($user);
+    }  
+
+    public function friendsPosts()
+    {
+        $ids = $this->friendsSentRequest()->pluck('id')
+            ->merge($this->friendsRecievedRequest()->pluck('id'));
+
+        return Post::whereIn('user_id', $ids)->publicOrFriends()->get();
     }
 }

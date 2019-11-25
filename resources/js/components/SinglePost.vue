@@ -9,7 +9,8 @@
                     </router-link>
                 </p>
                 <p class="mb-0">
-                    <a href="#" class="small date">{{ data.created_at | date }}</a>
+                    <a href="#" class="small date mr-1">{{ data.created_at | date }}</a>
+                    <img :src="'/images/' + data.privacy + '.png'">
                 </p>
             </div>
             <div class="dropdown float-right" v-if="canBeManaged">

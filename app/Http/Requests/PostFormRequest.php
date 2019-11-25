@@ -17,7 +17,8 @@ abstract class PostFormRequest extends FormRequest
     {
         return [
             'body' => 'required',
-            'images.*' => 'base64image:jpg,jpeg,png'
+            'images.*' => 'base64image:jpg,jpeg,png',
+            'privacy' => 'required|in:1,2,3'
         ];
     }
 

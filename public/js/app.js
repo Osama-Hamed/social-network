@@ -2298,6 +2298,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2313,7 +2319,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       form: new _shared_form__WEBPACK_IMPORTED_MODULE_1__["default"]({
         body: '',
-        images: []
+        images: [],
+        privacy: '1'
       })
     };
   },
@@ -2331,6 +2338,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.data.encodedImages.forEach(function (encodedImage) {
         return _this.form.images.push(encodedImage.encoded);
       });
+      if (this.data.privacy === 'public') this.form.privacy = '1';
+      if (this.data.privacy === 'friends') this.form.privacy = '2';
+      if (this.data.privacy === 'private') this.form.privacy = '3';
     },
     update: function () {
       var _update = _asyncToGenerator(
@@ -2857,6 +2867,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2871,7 +2887,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       form: new _shared_form__WEBPACK_IMPORTED_MODULE_1__["default"]({
         body: '',
-        images: []
+        images: [],
+        privacy: '1'
       })
     };
   },
@@ -2892,19 +2909,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 response = _context.sent;
                 _shared_event__WEBPACK_IMPORTED_MODULE_5__["default"].fire('post-created', response.data);
-                _context.next = 9;
+                this.form.privacy = '1';
+                _context.next = 10;
                 break;
 
-              case 7:
-                _context.prev = 7;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
 
-              case 9:
+              case 10:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 7]]);
+        }, _callee, this, [[0, 8]]);
       }));
 
       function publish() {
@@ -3109,6 +3127,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NewComment_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NewComment.vue */ "./resources/js/components/NewComment.vue");
 /* harmony import */ var _CommentsList_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CommentsList.vue */ "./resources/js/components/CommentsList.vue");
 /* harmony import */ var _Favorite_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Favorite.vue */ "./resources/js/components/Favorite.vue");
+//
 //
 //
 //
@@ -45689,6 +45708,56 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.privacy,
+                              expression: "form.privacy"
+                            }
+                          ],
+                          staticClass:
+                            "custom-select custom-select-sm w-25 ml-4",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "privacy",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { value: "1", selected: "" } },
+                            [_vm._v("Public")]
+                          ),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "2" } }, [
+                            _vm._v("Friends")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "3" } }, [
+                            _vm._v("Private")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
                         "button",
                         {
                           staticClass: "btn action mr-3 py-1 float-right",
@@ -46145,7 +46214,48 @@ var render = function() {
                   return _vm.encodeImages("images", $event)
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.privacy,
+                    expression: "form.privacy"
+                  }
+                ],
+                staticClass: "custom-select custom-select-sm w-25 ml-4",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.form,
+                      "privacy",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "1", selected: "" } }, [
+                  _vm._v("Public")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [_vm._v("Friends")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "3" } }, [_vm._v("Private")])
+              ]
+            )
           ])
         ]
       )
@@ -46486,9 +46596,13 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("p", { staticClass: "mb-0" }, [
-            _c("a", { staticClass: "small date", attrs: { href: "#" } }, [
+            _c("a", { staticClass: "small date mr-1", attrs: { href: "#" } }, [
               _vm._v(_vm._s(_vm._f("date")(_vm.data.created_at)))
-            ])
+            ]),
+            _vm._v(" "),
+            _c("img", {
+              attrs: { src: "/images/" + _vm.data.privacy + ".png" }
+            })
           ])
         ]),
         _vm._v(" "),
