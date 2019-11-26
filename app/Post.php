@@ -60,13 +60,36 @@ class Post extends Model
         ]);
     }
 
-    public function scopePublic($query)
+    public function scopePublicPrivacy($query)
     {
         return $query->where('privacy', 1);
     }
 
-    public function scopePublicOrFriends($query)
+    public function scopeFriendsPrivacy($query)
+    {
+        return $query->where('privacy', 2);
+    }
+
+    public function scopePublicOrFriendsPrivacy($query)
     {
         return $query->where('privacy', 1)->orWhere('privacy', 2);
+    }
+
+    public function scopeFriends($query, $user)
+    {
+        return $query->whereIn('user_id', $user->friendsIds());
+    }
+
+    public static function search($q)
+    {
+        return static::where('body', 'like', "%$q%")
+            ->where('user_id', '<>', auth()->id())
+            ->where(function ($query) {
+                $query->publicPrivacy()
+                    ->orWhere(function ($query) {
+                        $query->friends(auth()->user())
+                            ->friendsPrivacy();
+                    });
+            })->latest()->get();
     }
 }

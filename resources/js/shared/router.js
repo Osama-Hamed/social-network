@@ -54,7 +54,15 @@ const routes = [
                 component: require('../components/PhotosList.vue').default,
             }
         ]
-    }
+    },
+    {
+        path: '/search',
+        name: 'search',
+        component: require('../pages/Search.vue').default,
+        meta: {
+            requiresAuth: true
+        }
+    },
 ];
 
 const router = new VueRouter({

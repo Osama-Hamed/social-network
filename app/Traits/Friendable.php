@@ -88,11 +88,14 @@ trait Friendable
         $this->friendsRecievedRequest()->detach($user);
     }  
 
+    public function friendsIds()
+    {
+        return $this->friendsSentRequest()->pluck('id')
+            ->merge($this->friendsRecievedRequest()->pluck('id'));
+    }
+
     public function friendsPosts()
     {
-        $ids = $this->friendsSentRequest()->pluck('id')
-            ->merge($this->friendsRecievedRequest()->pluck('id'));
-
-        return Post::whereIn('user_id', $ids)->publicOrFriends()->get();
+        return Post::friends($this)->publicOrFriendsPrivacy()->get();
     }
 }

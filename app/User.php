@@ -83,8 +83,13 @@ class User extends Authenticatable implements JWTSubject
 
         if ($this->is($authUser)) return $this->posts()->latest()->get();
 
-        if ($this->isFriendOf($authUser)) return $this->posts()->publicOrFriends()->latest()->get();
+        if ($this->isFriendOf($authUser)) return $this->posts()->publicOrFriendsPrivacy()->latest()->get();
 
-        return $this->posts()->public()->latest()->get();
+        return $this->posts()->publicPrivacy()->latest()->get();
+    }
+
+    public static function search($q)
+    {
+        return static::where('first_name', 'like', "%$q%")->orWhere('last_name', 'like', "%$q%")->latest()->get();
     }
 }

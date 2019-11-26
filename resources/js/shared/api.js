@@ -125,5 +125,14 @@ export default {
                 return '/api/friends/' + username;
             }
         }
+    },
+
+    search: {
+        show: {
+            method: 'get',
+            url() {
+                return '/api/search';
+            }
+        }
     }
 }

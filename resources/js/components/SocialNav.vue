@@ -15,12 +15,15 @@
                     <li class="nav-item active mr-2">
                         <router-link :to="{name: 'home'}" class="bold-link nav-link">Home</router-link>
                     </li>
-                    <li class="nav-item mr-3">
+                    <li class="nav-item mr-2">
                         <router-link :to="{name: 'profile', params: {username: authUser.username}}" 
                             class="bold-link nav-link">
                             <img :src="authUser.avatarPath" class="small-profile-image">
                             {{ authUser.first_name }}
                         </router-link>
+                    </li>
+                    <li class="nav-item active mr-2">
+                        <router-link :to="{name: 'search'}" class="bold-link nav-link">Search</router-link>
                     </li>
                     <li class="nav-item mr-1" data-toggle="tooltip" data-placement="bottom" title="Messages">
                         <a href="#" class="nav-link">
