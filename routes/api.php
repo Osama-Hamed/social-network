@@ -15,6 +15,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/posts', 'PostController@store');
     Route::patch('/posts/{post}', 'PostController@update');
     Route::delete('/posts/{post}', 'PostController@destroy');
+    Route::get('/posts/{post}', 'PostController@show');
 
     Route::post('/posts/{post}/comments', 'CommentController@store');
     Route::patch('/comments/{comment}', 'CommentController@update');
@@ -34,4 +35,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('/friends/{user}', 'FriendshipController@destroy');
 
     Route::get('/search', 'SearchController@show');
+
+    Route::get('/activities', 'ActivityController@index');
 });

@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Favoritable;
+use App\Traits\RecordsActivity;
 
 class Comment extends Model
 {
-	use Favoritable;
+	use Favoritable, RecordsActivity;
 
     protected $fillable = ['user_id', 'body'];
     protected $withCount = ['favorites'];

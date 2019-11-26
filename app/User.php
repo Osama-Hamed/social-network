@@ -92,4 +92,19 @@ class User extends Authenticatable implements JWTSubject
     {
         return static::where('first_name', 'like', "%$q%")->orWhere('last_name', 'like', "%$q%")->latest()->get();
     }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+    public function friendsPosts()
+    {
+        return Post::friends($this)->publicOrFriendsPrivacy()->get();
+    }
+
+    public function friendsActivities($take = 20)
+    {
+        return Activity::friends($this)->latest()->take($take)->get();
+    }
 }

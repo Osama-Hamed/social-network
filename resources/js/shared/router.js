@@ -63,6 +63,14 @@ const routes = [
             requiresAuth: true
         }
     },
+    {
+        path: '/posts/:post',
+        name: 'post',
+        component: require('../pages/Post.vue').default,
+        meta: {
+            requiresAuth: true
+        }
+    },
 ];
 
 const router = new VueRouter({

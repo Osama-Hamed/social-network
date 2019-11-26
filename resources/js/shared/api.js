@@ -50,6 +50,12 @@ export default {
             url(id) {
                 return '/api/posts/' + id;
             }
+        },
+        show: {
+            method: 'get',
+            url(id) {
+                return '/api/posts/' + id;
+            }
         }
     },
 
@@ -134,5 +140,14 @@ export default {
                 return '/api/search';
             }
         }
-    }
+    },
+
+    activity: {
+        all: {
+            method: 'get',
+            url() {
+                return '/api/activities';
+            }
+        }
+    }    
 }

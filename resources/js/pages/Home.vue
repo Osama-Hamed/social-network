@@ -4,8 +4,11 @@
             <div class="card mb-4">
                 <img :src="authAvatar" class="card-img-top mx-auto d-block mt-4 big-profile-image">
                 <div class="card-body text-center mt-2">
-                    <a href="#" class="username font-weight-bold">{{ authName }}</a>
-                    <p class="card-text mt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <router-link :to="{name: 'profile', params: {username: authName}}" 
+                        class="username font-weight-bold">
+                        {{ authName }}
+                    </router-link>
+                    <p class="card-text mt-2">{{ authBio }}</p>
                 </div>
             </div>
         </div>
@@ -23,25 +26,42 @@
         <div class="col lg-3">
             <div class="card mb-4">
                 <h6 class="p-3 border-bottom mb-0">Friends Activity</h6>
-                <div class="card-body p-3">
-                    <div class="media mb-3">
-                        <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
-                        <div class="media-body my-auto small">
-                            <a href="#" class="font-weight-bold">Osama</a> shared a new <a href="#">post</a>.
-                        </div>
-                    </div>
+                <div class="card-body p-3 activity-panel">
+                    <div class="media mb-3" v-for="activity in activities">
+                        <img :src="activity.maker.avatarPath" class="mr-2 small-profile-image">
 
-                    <div class="media mb-3">
-                        <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
-                        <div class="media-body my-auto small">
-                            <a href="#" class="font-weight-bold">Osama</a> shared a new <a href="#">post</a>.
+                        <div class="media-body my-auto small" v-if="activity.type == 'created_post'">
+                            <router-link class="font-weight-bold" :to="{name: 'profile', params: {username: activity.maker.username}}">{{ activity.maker.first_name }}</router-link>
+                            published a new
+                            <router-link :to="{name: 'post', params: {post: activity.subject.id}}" class="font-weight-bold">post</router-link>
                         </div>
-                    </div>
 
-                    <div class="media">
-                        <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
-                        <div class="media-body my-auto small">
-                            <a href="#" class="font-weight-bold">Osama</a> shared a new <a href="#">post</a>.
+                        <div class="media-body my-auto small" v-if="activity.type == 'updated_post'">
+                            <router-link class="font-weight-bold" :to="{name: 'profile', params: {username: activity.maker.username}}">{{ activity.maker.first_name }}</router-link>
+                            updated a
+                            <router-link :to="{name: 'post', params: {post: activity.subject.id}}" class="font-weight-bold">post</router-link>
+                        </div>
+
+                        <div class="media-body my-auto small" v-if="activity.type == 'created_comment'">
+                            <router-link class="font-weight-bold" :to="{name: 'profile', params: {username: activity.maker.username}}">{{ activity.maker.first_name }}</router-link>
+                            commented on a
+                            <router-link :to="{name: 'post', params: {post: activity.subject.post_id}}" class="font-weight-bold">post</router-link>
+                        </div>
+
+                        <div class="media-body my-auto small" v-if="activity.type == 'updated_comment'">
+                            <router-link class="font-weight-bold" :to="{name: 'profile', params: {username: activity.maker.username}}">{{ activity.maker.first_name }}</router-link>
+                            updated comment on
+                            <router-link :to="{name: 'post', params: {post: activity.subject.post_id}}" class="font-weight-bold">post</router-link>
+                        </div>
+
+                        <div class="media-body my-auto small" v-if="activity.type == 'created_favorite'">
+                            <router-link class="font-weight-bold" :to="{name: 'profile', params: {username: activity.maker.username}}">{{ activity.maker.first_name }}</router-link>
+                            favorited a
+                            <router-link :to="{name: 'post', params: {post: activity.subject.favoritable_id}}" class="font-weight-bold" v-if="activity.subject.favoritable_type === 'App\\Post'">post</router-link>
+                            <span v-if="activity.subject.favoritable_type === 'App\\Comment'">
+                                comment on 
+                                <router-link :to="{name: 'post', params: {post: activity.subject.favoritable.post_id}}" class="font-weight-bold">post</router-link>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -90,20 +110,31 @@
         data() {
             return {
                 posts: [],
+                activities: [],
                 isReady: false
             }
         },
 
         created() {
-            this.fetch();
+            this.fetchPosts();
+            this.fetchActivities();
+            let vm = this;
+            setInterval(() => {vm.fetchActivities()}, 60000);
         },
 
         methods: {
-            async fetch() {
+            async fetchPosts() {
                 try {
                     const response = await axios[api.post.all.method](api.post.all.url());
                     this.posts = response.data;
                     this.isReady = true;
+                } catch (error) {}
+            },
+
+            async fetchActivities() {
+                try {
+                    const response = await axios[api.activity.all.method](api.activity.all.url());
+                    this.activities = response.data;
                 } catch (error) {}
             }
         },
@@ -115,6 +146,10 @@
 
             authName() {
                 return window.authUser.username;
+            },
+
+            authBio() {
+                return window.authUser.bio;
             }
         }
     }

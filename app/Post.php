@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\Favoritable;
+use App\Traits\RecordsActivity;
 
 class Post extends Model
 {
-    use Favoritable;
+    use Favoritable, RecordsActivity;
     
     protected $fillable = ['user_id', 'body', 'images', 'privacy'];
     protected $casts = ['images' => 'array'];
@@ -78,6 +79,11 @@ class Post extends Model
     public function scopeFriends($query, $user)
     {
         return $query->whereIn('user_id', $user->friendsIds());
+    }
+
+    public function isAccessibleFor($user)
+    {
+        return $this->privacy == 'public' || $user->is($this->owner) || ($user->isFriendOf($this->owner) && $this->privacy == 'friends');
     }
 
     public static function search($q)

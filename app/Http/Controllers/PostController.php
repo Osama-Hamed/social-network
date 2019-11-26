@@ -13,6 +13,13 @@ class PostController extends Controller
         return response()->json(auth()->user()->relatedPosts(), 200);
     }
 
+    public function show(Post $post)
+    {
+        if ($post->isAccessibleFor(auth()->user())) return response()->json($post, 200);
+
+        return response()->json([], 204);
+    }
+
     public function store(StorePostRequest $form)
     {
         return response()->json($form->save(), 201);
