@@ -92,4 +92,24 @@ trait Friendable
         return $this->friendsSentRequest()->pluck('id')
             ->merge($this->friendsRecievedRequest()->pluck('id'));
     }
+
+    public function requestedUsersIds()
+    {
+        return $this->usersSentRequest()->pluck('id')
+            ->merge($this->usersRecievedRequest()->pluck('id'));
+    }
+
+    public function friendsOfFriends($take)
+    {
+        $friendId = $this->friendsIds()->random();
+        $friend = static::where('id', $friendId)->first();
+        $friendFriendsIds =  $friend->friendsIds();
+        $exceptedIds = $this->friendsIds()->merge($this->requestedUsersIds())->push($this->id);
+        $includedIds = $friendFriendsIds->diff($exceptedIds);
+
+        return static::whereIn('id', $includedIds)
+            ->orderByRaw('RAND()')
+            ->take($take)
+            ->get();
+    }
 }

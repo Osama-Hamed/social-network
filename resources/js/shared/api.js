@@ -114,21 +114,30 @@ export default {
         create: {
             method: 'post',
             url() {
-                return '/api/friends';
+                return '/api/friendships';
             }
         },
 
         update: {
             method: 'patch',
             url(username) {
-                return '/api/friends/' + username;
+                return '/api/friendships/' + username;
             }
         },
 
         delete: {
             method: 'delete',
             url(username) {
-                return '/api/friends/' + username;
+                return '/api/friendships/' + username;
+            }
+        }
+    },
+
+    friendOfFriend: {
+        all: {
+            method: 'get',
+            url() {
+                return '/api/fof';
             }
         }
     },

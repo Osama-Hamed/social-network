@@ -3405,6 +3405,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3413,11 +3426,16 @@ __webpack_require__.r(__webpack_exports__);
     PostsList: _components_PostsList_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     NewPost: _components_NewPost_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['posts', 'encodedImages', 'profileUserId'],
+  props: ['posts', 'encodedImages', 'friends', 'profileUserId'],
   computed: {
     photosLink: function photosLink() {
       return _shared_router__WEBPACK_IMPORTED_MODULE_2__["default"].resolve({
         name: 'photos'
+      }).href;
+    },
+    friendsLink: function friendsLink() {
+      return _shared_router__WEBPACK_IMPORTED_MODULE_2__["default"].resolve({
+        name: 'friends'
       }).href;
     },
     canCreatePost: function canCreatePost() {
@@ -3535,20 +3553,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3560,23 +3564,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       posts: [],
+      totalPostsCount: 0,
+      skip: 0,
+      take: 10,
       activities: [],
+      friendsOfFriends: [],
       isReady: false
     };
   },
   created: function created() {
+    var _this = this;
+
     this.fetchPosts();
     this.fetchActivities();
+    this.fetchFriendsOfFriends();
     var vm = this;
     setInterval(function () {
       vm.fetchActivities();
     }, 60000);
+    window.addEventListener('scroll', function (e) {
+      if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight && _this.skip < _this.totalPostsCount) {
+        _this.fetchPosts();
+      }
+    });
   },
   methods: {
     fetchPosts: function () {
       var _fetchPosts = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var _this2 = this;
+
         var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -3584,25 +3602,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios[_shared_api__WEBPACK_IMPORTED_MODULE_3__["default"].post.all.method](_shared_api__WEBPACK_IMPORTED_MODULE_3__["default"].post.all.url());
+                return axios[_shared_api__WEBPACK_IMPORTED_MODULE_3__["default"].post.all.method](_shared_api__WEBPACK_IMPORTED_MODULE_3__["default"].post.all.url(), {
+                  params: {
+                    skip: this.skip,
+                    take: this.take
+                  }
+                });
 
               case 3:
                 response = _context.sent;
-                this.posts = response.data;
+                response.data.posts.forEach(function (post) {
+                  return _this2.posts.push(post);
+                });
+                this.totalPostsCount = response.data.totalPostsCount;
+                this.skip = this.posts.length;
                 this.isReady = true;
-                _context.next = 10;
+                _context.next = 12;
                 break;
 
-              case 8:
-                _context.prev = 8;
+              case 10:
+                _context.prev = 10;
                 _context.t0 = _context["catch"](0);
 
-              case 10:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 8]]);
+        }, _callee, this, [[0, 10]]);
       }));
 
       function fetchPosts() {
@@ -3647,6 +3674,82 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return fetchActivities;
+    }(),
+    fetchFriendsOfFriends: function () {
+      var _fetchFriendsOfFriends = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return axios[_shared_api__WEBPACK_IMPORTED_MODULE_3__["default"].friendOfFriend.all.method](_shared_api__WEBPACK_IMPORTED_MODULE_3__["default"].friendOfFriend.all.url());
+
+              case 3:
+                response = _context3.sent;
+                this.friendsOfFriends = response.data;
+                _context3.next = 9;
+                break;
+
+              case 7:
+                _context3.prev = 7;
+                _context3.t0 = _context3["catch"](0);
+
+              case 9:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[0, 7]]);
+      }));
+
+      function fetchFriendsOfFriends() {
+        return _fetchFriendsOfFriends.apply(this, arguments);
+      }
+
+      return fetchFriendsOfFriends;
+    }(),
+    sendFriendRequest: function () {
+      var _sendFriendRequest = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(username, index) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.prev = 0;
+                _context4.next = 3;
+                return axios[_shared_api__WEBPACK_IMPORTED_MODULE_3__["default"].friendship.create.method](_shared_api__WEBPACK_IMPORTED_MODULE_3__["default"].friendship.create.url(), {
+                  username: username
+                });
+
+              case 3:
+                response = _context4.sent;
+                this.friendsOfFriends.splice(index, 1);
+                _context4.next = 9;
+                break;
+
+              case 7:
+                _context4.prev = 7;
+                _context4.t0 = _context4["catch"](0);
+
+              case 9:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this, [[0, 7]]);
+      }));
+
+      function sendFriendRequest(_x, _x2) {
+        return _sendFriendRequest.apply(this, arguments);
+      }
+
+      return sendFriendRequest;
     }()
   },
   computed: {
@@ -4227,6 +4330,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return {
           posts: this.items,
           encodedImages: this.encodedImages.slice(0, 9),
+          friends: this.profileFriends.slice(0, 9),
           profileUserId: this.profileUser.id
         };
       }
@@ -46181,7 +46285,7 @@ var render = function() {
       { staticClass: "row" },
       _vm._l(_vm.users, function(user) {
         return _c("div", { staticClass: "col-lg-4" }, [
-          _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card mb-3" }, [
             _c("div", { staticClass: "card-body py-2" }, [
               _c(
                 "div",
@@ -46731,9 +46835,16 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("a", { staticClass: "small date", attrs: { href: "#" } }, [
-                  _vm._v(_vm._s(_vm._f("date")(_vm.data.created_at)))
-                ])
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "small date mr-1",
+                    attrs: {
+                      to: { name: "post", params: { post: _vm.data.post_id } }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm._f("date")(_vm.data.created_at)))]
+                )
               ],
               1
             ),
@@ -46895,15 +47006,25 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("p", { staticClass: "mb-0" }, [
-            _c("a", { staticClass: "small date mr-1", attrs: { href: "#" } }, [
-              _vm._v(_vm._s(_vm._f("date")(_vm.data.created_at)))
-            ]),
-            _vm._v(" "),
-            _c("img", {
-              attrs: { src: "/images/" + _vm.data.privacy + ".png" }
-            })
-          ])
+          _c(
+            "p",
+            { staticClass: "mb-0" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "small date mr-1",
+                  attrs: { to: { name: "post", params: { post: _vm.data.id } } }
+                },
+                [_vm._v(_vm._s(_vm._f("date")(_vm.data.created_at)))]
+              ),
+              _vm._v(" "),
+              _c("img", {
+                attrs: { src: "/images/" + _vm.data.privacy + ".png" }
+              })
+            ],
+            1
+          )
         ]),
         _vm._v(" "),
         _vm.canBeManaged
@@ -47401,6 +47522,45 @@ var render = function() {
             ])
           ],
           1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card mb-4" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "p-3 mb-0 font-weight-bold",
+                attrs: { to: _vm.friendsLink }
+              },
+              [_vm._v("Friends")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body p-0" }, [
+              _c(
+                "div",
+                { staticClass: "row p-0 m-0" },
+                _vm._l(_vm.friends, function(friend) {
+                  return _c(
+                    "div",
+                    { staticClass: "col-lg-4 pl-1 pr-1 mb-1 small-gallery" },
+                    [
+                      _c("img", {
+                        staticClass: "img-fluid gallery-photo img-thumbnail",
+                        attrs: {
+                          src: friend.avatarPath,
+                          title: friend.username
+                        }
+                      })
+                    ]
+                  )
+                }),
+                0
+              )
+            ])
+          ],
+          1
         )
       ]),
       _vm._v(" "),
@@ -47507,224 +47667,201 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "col lg-3" }, [
-      _c("div", { staticClass: "card mb-4" }, [
-        _c("h6", { staticClass: "p-3 border-bottom mb-0" }, [
-          _vm._v("Friends Activity")
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "card-body p-3 activity-panel" },
-          _vm._l(_vm.activities, function(activity) {
-            return _c("div", { staticClass: "media mb-3" }, [
-              _c("img", {
-                staticClass: "mr-2 small-profile-image",
-                attrs: { src: activity.maker.avatarPath }
-              }),
-              _vm._v(" "),
-              activity.type == "created_post"
-                ? _c(
-                    "div",
-                    { staticClass: "media-body my-auto small" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "profile",
-                              params: { username: activity.maker.username }
-                            }
-                          }
-                        },
-                        [_vm._v(_vm._s(activity.maker.first_name))]
-                      ),
-                      _vm._v(
-                        "\n                        published a new\n                        "
-                      ),
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "post",
-                              params: { post: activity.subject.id }
-                            }
-                          }
-                        },
-                        [_vm._v("post")]
-                      )
-                    ],
-                    1
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              activity.type == "updated_post"
-                ? _c(
-                    "div",
-                    { staticClass: "media-body my-auto small" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "profile",
-                              params: { username: activity.maker.username }
-                            }
-                          }
-                        },
-                        [_vm._v(_vm._s(activity.maker.first_name))]
-                      ),
-                      _vm._v(
-                        "\n                        updated a\n                        "
-                      ),
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "post",
-                              params: { post: activity.subject.id }
-                            }
-                          }
-                        },
-                        [_vm._v("post")]
-                      )
-                    ],
-                    1
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              activity.type == "created_comment"
-                ? _c(
-                    "div",
-                    { staticClass: "media-body my-auto small" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "profile",
-                              params: { username: activity.maker.username }
-                            }
-                          }
-                        },
-                        [_vm._v(_vm._s(activity.maker.first_name))]
-                      ),
-                      _vm._v(
-                        "\n                        commented on a\n                        "
-                      ),
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "post",
-                              params: { post: activity.subject.post_id }
-                            }
-                          }
-                        },
-                        [_vm._v("post")]
-                      )
-                    ],
-                    1
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              activity.type == "updated_comment"
-                ? _c(
-                    "div",
-                    { staticClass: "media-body my-auto small" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "profile",
-                              params: { username: activity.maker.username }
-                            }
-                          }
-                        },
-                        [_vm._v(_vm._s(activity.maker.first_name))]
-                      ),
-                      _vm._v(
-                        "\n                        updated comment on\n                        "
-                      ),
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "post",
-                              params: { post: activity.subject.post_id }
-                            }
-                          }
-                        },
-                        [_vm._v("post")]
-                      )
-                    ],
-                    1
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              activity.type == "created_favorite"
-                ? _c(
-                    "div",
-                    { staticClass: "media-body my-auto small" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "font-weight-bold",
-                          attrs: {
-                            to: {
-                              name: "profile",
-                              params: { username: activity.maker.username }
-                            }
-                          }
-                        },
-                        [_vm._v(_vm._s(activity.maker.first_name))]
-                      ),
-                      _vm._v(
-                        "\n                        favorited a\n                        "
-                      ),
-                      activity.subject.favoritable_type === "App\\Post"
-                        ? _c(
+      _vm.activities.length > 0
+        ? _c("div", { staticClass: "card mb-4" }, [
+            _c("h6", { staticClass: "p-3 border-bottom mb-0" }, [
+              _vm._v("Friends Activity")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-body p-3 activity-panel" },
+              _vm._l(_vm.activities, function(activity) {
+                return _c("div", { staticClass: "media mb-3" }, [
+                  _c("img", {
+                    staticClass: "mr-2 small-profile-image",
+                    attrs: { src: activity.maker.avatarPath }
+                  }),
+                  _vm._v(" "),
+                  activity.type == "created_post"
+                    ? _c(
+                        "div",
+                        { staticClass: "media-body my-auto small" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "font-weight-bold",
+                              attrs: {
+                                to: {
+                                  name: "profile",
+                                  params: { username: activity.maker.username }
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(activity.maker.first_name))]
+                          ),
+                          _vm._v(
+                            "\n                        published a new\n                        "
+                          ),
+                          _c(
                             "router-link",
                             {
                               staticClass: "font-weight-bold",
                               attrs: {
                                 to: {
                                   name: "post",
-                                  params: {
-                                    post: activity.subject.favoritable_id
-                                  }
+                                  params: { post: activity.subject.id }
                                 }
                               }
                             },
                             [_vm._v("post")]
                           )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      activity.subject.favoritable_type === "App\\Comment"
-                        ? _c(
-                            "span",
-                            [
-                              _vm._v(
-                                "\n                            comment on \n                            "
-                              ),
-                              _c(
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  activity.type == "updated_post"
+                    ? _c(
+                        "div",
+                        { staticClass: "media-body my-auto small" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "font-weight-bold",
+                              attrs: {
+                                to: {
+                                  name: "profile",
+                                  params: { username: activity.maker.username }
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(activity.maker.first_name))]
+                          ),
+                          _vm._v(
+                            "\n                        updated a\n                        "
+                          ),
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "font-weight-bold",
+                              attrs: {
+                                to: {
+                                  name: "post",
+                                  params: { post: activity.subject.id }
+                                }
+                              }
+                            },
+                            [_vm._v("post")]
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  activity.type == "created_comment"
+                    ? _c(
+                        "div",
+                        { staticClass: "media-body my-auto small" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "font-weight-bold",
+                              attrs: {
+                                to: {
+                                  name: "profile",
+                                  params: { username: activity.maker.username }
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(activity.maker.first_name))]
+                          ),
+                          _vm._v(
+                            "\n                        commented on a\n                        "
+                          ),
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "font-weight-bold",
+                              attrs: {
+                                to: {
+                                  name: "post",
+                                  params: { post: activity.subject.post_id }
+                                }
+                              }
+                            },
+                            [_vm._v("post")]
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  activity.type == "updated_comment"
+                    ? _c(
+                        "div",
+                        { staticClass: "media-body my-auto small" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "font-weight-bold",
+                              attrs: {
+                                to: {
+                                  name: "profile",
+                                  params: { username: activity.maker.username }
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(activity.maker.first_name))]
+                          ),
+                          _vm._v(
+                            "\n                        updated comment on\n                        "
+                          ),
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "font-weight-bold",
+                              attrs: {
+                                to: {
+                                  name: "post",
+                                  params: { post: activity.subject.post_id }
+                                }
+                              }
+                            },
+                            [_vm._v("post")]
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  activity.type == "created_favorite"
+                    ? _c(
+                        "div",
+                        { staticClass: "media-body my-auto small" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "font-weight-bold",
+                              attrs: {
+                                to: {
+                                  name: "profile",
+                                  params: { username: activity.maker.username }
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(activity.maker.first_name))]
+                          ),
+                          _vm._v(
+                            "\n                        favorited a\n                        "
+                          ),
+                          activity.subject.favoritable_type === "App\\Post"
+                            ? _c(
                                 "router-link",
                                 {
                                   staticClass: "font-weight-bold",
@@ -47732,118 +47869,119 @@ var render = function() {
                                     to: {
                                       name: "post",
                                       params: {
-                                        post:
-                                          activity.subject.favoritable.post_id
+                                        post: activity.subject.favoritable_id
                                       }
                                     }
                                   }
                                 },
                                 [_vm._v("post")]
                               )
-                            ],
-                            1
+                            : _vm._e(),
+                          _vm._v(" "),
+                          activity.subject.favoritable_type === "App\\Comment"
+                            ? _c(
+                                "span",
+                                [
+                                  _vm._v(
+                                    "\n                            comment on \n                            "
+                                  ),
+                                  _c(
+                                    "router-link",
+                                    {
+                                      staticClass: "font-weight-bold",
+                                      attrs: {
+                                        to: {
+                                          name: "post",
+                                          params: {
+                                            post:
+                                              activity.subject.favoritable
+                                                .post_id
+                                          }
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("post")]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    : _vm._e()
+                ])
+              }),
+              0
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.friendsOfFriends.length > 0
+        ? _c("div", { staticClass: "card mb-4" }, [
+            _c("h6", { staticClass: "p-3 border-bottom mb-0" }, [
+              _vm._v("People You May Know")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "card-body p-3" },
+              _vm._l(_vm.friendsOfFriends, function(fof, index) {
+                return _c("div", { staticClass: "media mb-3" }, [
+                  _c("img", {
+                    staticClass: "mr-2 small-profile-image",
+                    attrs: { src: fof.avatarPath }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "media-body my-auto small" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "font-weight-bold d-inline-block mt-1",
+                          attrs: {
+                            to: {
+                              name: "profile",
+                              params: { username: fof.username }
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(fof.first_name + " " + fof.last_name) +
+                              "\n                        "
                           )
-                        : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "float-right btn btn-sm action py-0",
+                          on: {
+                            click: function($event) {
+                              return _vm.sendFriendRequest(fof.username, index)
+                            }
+                          }
+                        },
+                        [_vm._v("add friend")]
+                      )
                     ],
                     1
                   )
-                : _vm._e()
-            ])
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(0)
+                ])
+              }),
+              0
+            )
+          ])
+        : _vm._e()
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mb-4" }, [
-      _c("h6", { staticClass: "p-3 border-bottom mb-0" }, [
-        _vm._v("People You May Know")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body p-3" }, [
-        _c("div", { staticClass: "media mb-3" }, [
-          _c("img", {
-            staticClass: "mr-2 small-profile-image",
-            attrs: { src: "/storage/avatars/default.png" }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "media-body my-auto small" }, [
-            _c(
-              "a",
-              {
-                staticClass: "font-weight-bold d-inline-block mt-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("Osama Hamed")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "float-right btn btn-sm action py-0" },
-              [_vm._v("add friend")]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "media mb-3" }, [
-          _c("img", {
-            staticClass: "mr-2 small-profile-image",
-            attrs: { src: "/storage/avatars/default.png" }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "media-body my-auto small" }, [
-            _c(
-              "a",
-              {
-                staticClass: "font-weight-bold d-inline-block mt-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("Osama Hamed")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "float-right btn btn-sm action py-0" },
-              [_vm._v("add friend")]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "media mb-3" }, [
-          _c("img", {
-            staticClass: "mr-2 small-profile-image",
-            attrs: { src: "/storage/avatars/default.png" }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "media-body my-auto small" }, [
-            _c(
-              "a",
-              {
-                staticClass: "font-weight-bold d-inline-block mt-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("Osama Hamed")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "float-right btn btn-sm action py-0" },
-              [_vm._v("add friend")]
-            )
-          ])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -49083,8 +49221,8 @@ var render = function() {
                   { staticClass: "row" },
                   _vm._l(_vm.results, function(result) {
                     return _c("div", { staticClass: "col-lg-6" }, [
-                      _c("div", { staticClass: "card" }, [
-                        _c("div", { staticClass: "card-body py-3" }, [
+                      _c("div", { staticClass: "card mb-2" }, [
+                        _c("div", { staticClass: "card-body py-2" }, [
                           _c(
                             "div",
                             {
@@ -49093,7 +49231,7 @@ var render = function() {
                             },
                             [
                               _c("img", {
-                                staticClass: "mr-3 medium-profile-image",
+                                staticClass: "mr-3 small-profile-image",
                                 attrs: { src: result.avatarPath }
                               }),
                               _vm._v(" "),
@@ -66193,19 +66331,27 @@ __webpack_require__.r(__webpack_exports__);
     create: {
       method: 'post',
       url: function url() {
-        return '/api/friends';
+        return '/api/friendships';
       }
     },
     update: {
       method: 'patch',
       url: function url(username) {
-        return '/api/friends/' + username;
+        return '/api/friendships/' + username;
       }
     },
     "delete": {
       method: 'delete',
       url: function url(username) {
-        return '/api/friends/' + username;
+        return '/api/friendships/' + username;
+      }
+    }
+  },
+  friendOfFriend: {
+    all: {
+      method: 'get',
+      url: function url() {
+        return '/api/fof';
       }
     }
   },

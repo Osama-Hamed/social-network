@@ -7,7 +7,7 @@
 					<router-link :to="{name: 'profile', params: {username: data.owner.username}}" class="font-weight-bold username small">
                         {{ data.owner.first_name + ' ' + data.owner.last_name }}
                     </router-link>
-					<a href="#" class="small date">{{ data.created_at | date }}</a>
+					<router-link :to="{name: 'post', params: {post: data.post_id}}" class="small date mr-1">{{ data.created_at | date }}</router-link>
 				</p>
 				<p class="mb-0 comment-content" v-if="! editing">{{ data.body }}</p>
 				<edit-comment :data="data" @cancel="editing = false" v-else></edit-comment>

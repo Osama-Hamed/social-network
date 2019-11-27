@@ -24,7 +24,7 @@
         </div>
 
         <div class="col lg-3">
-            <div class="card mb-4">
+            <div class="card mb-4" v-if="activities.length > 0">
                 <h6 class="p-3 border-bottom mb-0">Friends Activity</h6>
                 <div class="card-body p-3 activity-panel">
                     <div class="media mb-3" v-for="activity in activities">
@@ -67,30 +67,16 @@
                 </div>
             </div>
 
-            <div class="card mb-4">
+            <div class="card mb-4" v-if="friendsOfFriends.length > 0">
                 <h6 class="p-3 border-bottom mb-0">People You May Know</h6>
                 <div class="card-body p-3">
-                    <div class="media mb-3">
-                        <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
+                    <div class="media mb-3" v-for="(fof, index) in friendsOfFriends">
+                        <img :src="fof.avatarPath" class="mr-2 small-profile-image">
                         <div class="media-body my-auto small">
-                            <a href="#" class="font-weight-bold d-inline-block mt-1">Osama Hamed</a>
-                            <button class="float-right btn btn-sm action py-0">add friend</button>
-                        </div>
-                    </div>
-
-                    <div class="media mb-3">
-                        <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
-                        <div class="media-body my-auto small">
-                            <a href="#" class="font-weight-bold d-inline-block mt-1">Osama Hamed</a>
-                            <button class="float-right btn btn-sm action py-0">add friend</button>
-                        </div>
-                    </div>
-
-                    <div class="media mb-3">
-                        <img src="/storage/avatars/default.png" class="mr-2 small-profile-image">
-                        <div class="media-body my-auto small">
-                            <a href="#" class="font-weight-bold d-inline-block mt-1">Osama Hamed</a>
-                            <button class="float-right btn btn-sm action py-0">add friend</button>
+                            <router-link :to="{name: 'profile', params: {username: fof.username}}" class="font-weight-bold d-inline-block mt-1">
+                                {{ fof.first_name + ' ' + fof.last_name }}
+                            </router-link>
+                            <button class="float-right btn btn-sm action py-0" @click="sendFriendRequest(fof.username, index)">add friend</button>
                         </div>
                     </div>
                 </div>
@@ -110,7 +96,11 @@
         data() {
             return {
                 posts: [],
+                totalPostsCount: 0,
+                skip: 0,
+                take: 10,
                 activities: [],
+                friendsOfFriends: [],
                 isReady: false
             }
         },
@@ -118,15 +108,29 @@
         created() {
             this.fetchPosts();
             this.fetchActivities();
+            this.fetchFriendsOfFriends();
             let vm = this;
             setInterval(() => {vm.fetchActivities()}, 60000);
+
+            window.addEventListener('scroll', (e) => {
+                if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight && this.skip < this.totalPostsCount) {
+                    this.fetchPosts();
+                }
+            })
         },
 
         methods: {
             async fetchPosts() {
                 try {
-                    const response = await axios[api.post.all.method](api.post.all.url());
-                    this.posts = response.data;
+                    const response = await axios[api.post.all.method](api.post.all.url(), {
+                        params: {
+                            skip: this.skip,
+                            take: this.take
+                        }
+                    });
+                    response.data.posts.forEach(post => this.posts.push(post));
+                    this.totalPostsCount = response.data.totalPostsCount;
+                    this.skip = this.posts.length;
                     this.isReady = true;
                 } catch (error) {}
             },
@@ -135,6 +139,20 @@
                 try {
                     const response = await axios[api.activity.all.method](api.activity.all.url());
                     this.activities = response.data;
+                } catch (error) {}
+            },
+
+            async fetchFriendsOfFriends() {
+                try {
+                    const response = await axios[api.friendOfFriend.all.method](api.friendOfFriend.all.url());
+                    this.friendsOfFriends = response.data;
+                } catch (error) {}
+            },
+
+            async sendFriendRequest(username, index) {
+                try {
+                    const response = await axios[api.friendship.create.method](api.friendship.create.url(), {username: username});
+                    this.friendsOfFriends.splice(index, 1);
                 } catch (error) {}
             }
         },

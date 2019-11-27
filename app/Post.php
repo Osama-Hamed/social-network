@@ -86,7 +86,7 @@ class Post extends Model
         return $this->privacy == 'public' || $user->is($this->owner) || ($user->isFriendOf($this->owner) && $this->privacy == 'friends');
     }
 
-    public static function search($q)
+    public static function search($q, $take = 50)
     {
         return static::where('body', 'like', "%$q%")
             ->where('user_id', '<>', auth()->id())
@@ -96,6 +96,6 @@ class Post extends Model
                         $query->friends(auth()->user())
                             ->friendsPrivacy();
                     });
-            })->latest()->get();
+            })->latest()->take($take)->get();
     }
 }

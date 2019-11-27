@@ -30,10 +30,10 @@
 
 			<div class="row" v-if="resultType == 'users'">
 				<div class="col-lg-6" v-for="result in results">
-					<div class="card">
-						<div class="card-body py-3">
+					<div class="card mb-2">
+						<div class="card-body py-2">
 							<div class="media d-flex flex-wrap align-items-center">
-								<img :src="result.avatarPath" class="mr-3 medium-profile-image">
+								<img :src="result.avatarPath" class="mr-3 small-profile-image">
 								<div class="media-body mt-2">
 									<p class="mb-0">
 					                    <router-link :to="{name: 'profile', params: {username: result.username}}" class="font-weight-bold username">

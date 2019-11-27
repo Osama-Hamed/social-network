@@ -10,7 +10,10 @@ class PostController extends Controller
 {
     public function index()
     {
-        return response()->json(auth()->user()->relatedPosts(), 200);
+        return response()->json([
+            'posts' => auth()->user()->relatedPosts(request('skip'), request('take')),
+            'totalPostsCount' => auth()->user()->relatedPostsCount()
+        ], 200);
     }
 
     public function show(Post $post)

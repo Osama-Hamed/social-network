@@ -14,6 +14,19 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="card mb-4">
+					<router-link 
+						class="p-3 mb-0 font-weight-bold" 
+						:to="friendsLink">Friends</router-link>
+					<div class="card-body p-0">
+						<div class="row p-0 m-0">
+							<div class="col-lg-4 pl-1 pr-1 mb-1 small-gallery" v-for="friend in friends">
+								<img :src="friend.avatarPath" class="img-fluid gallery-photo img-thumbnail" :title="friend.username">
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="col-lg-8">
@@ -36,11 +49,15 @@
 	export default {
 		components: {PostsList, NewPost},
 
-		props: ['posts', 'encodedImages', 'profileUserId'],
+		props: ['posts', 'encodedImages', 'friends', 'profileUserId'],
 
 		computed: {
 			photosLink() {
 				return router.resolve({name: 'photos'}).href;
+			},
+
+			friendsLink() {
+				return router.resolve({name: 'friends'}).href;
 			},
 
 			canCreatePost() {

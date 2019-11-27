@@ -224,6 +224,7 @@
 					return {
 						posts: this.items,
 					 	encodedImages: this.encodedImages.slice(0, 9),
+					 	friends: this.profileFriends.slice(0, 9),
 					 	profileUserId: this.profileUser.id
 					};
 				}

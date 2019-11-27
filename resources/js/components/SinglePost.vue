@@ -9,7 +9,7 @@
                     </router-link>
                 </p>
                 <p class="mb-0">
-                    <a href="#" class="small date mr-1">{{ data.created_at | date }}</a>
+                    <router-link :to="{name: 'post', params: {post: data.id}}" class="small date mr-1">{{ data.created_at | date }}</router-link>
                     <img :src="'/images/' + data.privacy + '.png'">
                 </p>
             </div>

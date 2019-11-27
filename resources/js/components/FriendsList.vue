@@ -2,7 +2,7 @@
 	<div class="col-lg-9 offset-lg-1">
 		<div class="row">
 			<div class="col-lg-4" v-for="user in users">
-				<div class="card">
+				<div class="card mb-3">
 					<div class="card-body py-2">
 						<div class="media d-flex flex-wrap align-items-center">
 							<img :src="user.avatarPath" class="mr-3 medium-profile-image">
