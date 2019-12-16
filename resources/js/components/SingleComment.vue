@@ -1,13 +1,13 @@
 <template>
 	<div class="comment mx-4 mt-2 px-3">
 		<div class="media py-2">
-			<img :src="data.owner.avatarPath" class="mr-3 small-profile-image">
+			<img :src="data.owner.profile.avatarPath" class="mr-3 small-profile-image">
 			<div class="media-body my-auto">
 				<p class="mb-0 ">
 					<router-link :to="{name: 'profile', params: {username: data.owner.username}}" class="font-weight-bold username small">
                         {{ data.owner.first_name + ' ' + data.owner.last_name }}
                     </router-link>
-					<router-link :to="{name: 'post', params: {post: data.post_id}}" class="small date mr-1">{{ data.created_at | date }}</router-link>
+					<router-link :to="{name: 'post', params: {post: data.post_id}}" class="small date mr-1">{{ data.created_at | date('formNow') }}</router-link>
 				</p>
 				<p class="mb-0 comment-content" v-if="! editing">{{ data.body }}</p>
 				<edit-comment :data="data" @cancel="editing = false" v-else></edit-comment>
@@ -29,7 +29,6 @@
 </template>
 
 <script>
-	import moment from 'moment';
 	import EditComment from './EditComment.vue';
 	import DeleteComment from './DeleteComment.vue';
 	import Favorite from './Favorite.vue';
@@ -54,12 +53,6 @@
 			canBeDeleted() {
 				return window.authUser.id === this.data.user_id || window.authUser.id === this.postOwnerId;
 			}
-		},
-
-		filters: {
-            date(value) {
-                return moment(value).fromNow();
-            }
-        }
+		}
 	}
 </script>

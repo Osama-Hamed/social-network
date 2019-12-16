@@ -35,7 +35,7 @@
         methods: {
             async add() {
                 try {
-                    const response = await this.form[api.comment.create.method](api.comment.create.url(this.postId));
+                    const response = await this.form[api.storeComment.method](api.storeComment.url(this.postId));
                     Event.fire('comment-created', response.data);
                 } catch (error) {}
             }
@@ -43,7 +43,7 @@
 
         computed: {
             authAvatar() {
-                return window.authUser.avatarPath;
+                return window.authUser.profile.avatarPath;
             }
         }
     }

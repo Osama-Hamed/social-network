@@ -31,7 +31,7 @@
         methods: {
             async destroy() {
                 try {
-                    const response = await axios[api.post.delete.method](api.post.delete.url(this.id));
+                    const response = await axios[api.deletePost.method](api.deletePost.url(this.id));
                     Event.fire('post-deleted', this.id);
                 } catch (error) {}
             },

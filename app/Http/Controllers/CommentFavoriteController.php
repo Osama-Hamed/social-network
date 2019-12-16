@@ -8,10 +8,14 @@ class CommentFavoriteController extends Controller
 {
     public function store(Comment $comment)
     {
-   		$comment->favorite();
+		$comment->favorite();
+		
+		return response()->json(null, 204);
 	}
 	public function destroy(Comment $comment)
     {
-   		$comment->unfavorite();
+		$comment->unfavorite();
+		
+		return response()->json(null, 204);
 	}
 }

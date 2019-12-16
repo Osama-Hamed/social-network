@@ -99,8 +99,14 @@ trait Friendable
             ->merge($this->usersRecievedRequest()->pluck('id'));
     }
 
-    public function friendsOfFriends($take)
+    public function hasFriends()
     {
+        return $this->friendsRecievedRequest()->count() || $this->friendsSentRequest()->count();
+    }
+
+    public function friendsOfFriends($take = 3)
+    {
+        if (!$this->hasFriends()) return [];
         $friendId = $this->friendsIds()->random();
         $friend = static::where('id', $friendId)->first();
         $friendFriendsIds =  $friend->friendsIds();

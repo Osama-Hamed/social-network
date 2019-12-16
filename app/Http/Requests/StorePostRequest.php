@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Post;
+use App\Services\UploadBase64Images;
 
 class StorePostRequest extends PostFormRequest
 {
@@ -18,10 +19,10 @@ class StorePostRequest extends PostFormRequest
 
     public function save()
     {
-        return Post::publish([
+        return Post::create([
             'user_id' => $this->user()->id,
             'body' => $this->body,
-            'images' => $this->uploadImages(),
+            'images' => app(UploadBase64Images::class)->uploadMultiple($this->images),
             'privacy' => $this->privacy
         ])->fresh();
     }

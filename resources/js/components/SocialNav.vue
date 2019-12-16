@@ -18,7 +18,7 @@
                     <li class="nav-item mr-2">
                         <router-link :to="{name: 'profile', params: {username: authUser.username}}" 
                             class="bold-link nav-link">
-                            <img :src="authUser.avatarPath" class="small-profile-image">
+                            <img :src="authUser.profile.avatarPath" class="small-profile-image">
                             {{ authUser.first_name }}
                         </router-link>
                     </li>

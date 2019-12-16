@@ -15,7 +15,7 @@
     export default {
         methods: {
             logout() {
-                axios[api.auth.logout.method](api.auth.logout.url())
+                axios[api.logout.method](api.logout.url())
                     .then(response => {
                         removeAccess();
                         Event.fire('unauthenticated');

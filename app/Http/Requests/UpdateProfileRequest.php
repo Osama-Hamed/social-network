@@ -25,13 +25,17 @@ class UpdateProfileRequest extends FormRequest
 
     public function save()
     {
-        $data = $this->avatar ? ['avatar' => $this->uploadAvatar()] : ['bio' => $this->bio];
+        $profile = $this->user->profile;
 
-        return tap($this->user, function ($user) use ($data) {
-            $user->removeAvatar();
+        if ($this->avatar) {
+            $profile->removeAvatar();
 
-            $user->update($data);
-        });
+            $profile->update(['avatar' => $this->uploadAvatar()]);
+        }
+
+        $profile->update(['bio' => $this->bio]);
+
+        return $profile;
     }
 
     public function uploadAvatar($value='')

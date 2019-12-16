@@ -11,6 +11,7 @@
 <script>
 	import SinglePost from '../components/SinglePost.vue';
 	import api from '../shared/api';
+	import router from '../shared/router';
 
 	export default {
 		components: {SinglePost},
@@ -29,10 +30,12 @@
 		methods: {
 			async fetch() {
 				try {
-					const response  = await axios[api.post.show.method](api.post.show.url(this.$route.params.post));
+					const response  = await axios[api.getPost.method](api.getPost.url(this.$route.params.post));
 					this.data = response.data;
 					this.isReady = true;
-				} catch (error) {}
+				} catch (error) {
+					router.push({name: 'notFound'});
+				}
 			}
 		}
 	}

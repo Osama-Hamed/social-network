@@ -30,7 +30,7 @@ class StoreUserRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|alpha_dash|unique:users',
-            'email' => 'required|string|email|max:255|unique:users|confirmed',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|max:32|confirmed',
             'birthday' => 'required|string|date_format:d/m/Y',
             'gender' => 'required|in:male,female'
@@ -41,12 +41,22 @@ class StoreUserRequest extends FormRequest
     {
         $data = $this->validated();
 
-        $data['password'] = Hash::make($data['password']);
-        $data['birthday'] = Carbon::createFromFormat('d/m/Y', $data['birthday']);
-        $data['avatar'] = 'default.png';
-        $data['country'] = geoip()->getLocation($this->ip())['country'];
-        $data['city'] = geoip()->getLocation($this->ip())['city'];
+        $user = User::create([
+            'first_name' => $data['first_name'],    
+            'last_name' => $data['last_name'],
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password'])
+        ]);
 
-        return User::create($data);
+        $user->profile()->create([
+            'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday']),
+            'gender' => $data['gender'],
+            'avatar' => 'default.png',
+            'country' => geoip()->getLocation($this->ip())['country'],
+            'city' => geoip()->getLocation($this->ip())['city']
+        ]);
+
+        return $user->load('profile');
     }
 }

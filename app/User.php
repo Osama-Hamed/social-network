@@ -19,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'username', 'email', 'password', 'gender', 'birthday', 'bio', 'country', 'city', 'avatar'
+        'first_name', 'last_name', 'username', 'email', 'password'
     ];
 
     /**
@@ -40,7 +40,7 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['avatarPath'];
+    protected $with = ['profile'];
 
     public function getJWTIdentifier()
     {
@@ -62,49 +62,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Post::class);
     }
 
-    public function getAvatarPathAttribute()
+    public function profile()
     {
-        return "/storage/avatars/$this->avatar";
-    }
-
-    public function removeAvatar()
-    {
-        if ($this->avatar !== 'default.png') Storage::disk('public')->delete("avatars/$this->avatar");
-    }
-
-    public function relatedPosts($skip = 0, $take = 10)
-    {
-        return Post::friends($this)
-            ->publicOrFriendsPrivacy()
-            ->orWhere('user_id', $this->id)
-            ->skip($skip)
-            ->take($take)
-            ->latest()
-            ->get();
-    }
-
-    public function relatedPostsCount()
-    {
-        return Post::friends($this)
-            ->publicOrFriendsPrivacy()
-            ->orWhere('user_id', $this->id)
-            ->count();
-    }
-
-    public function profilePosts($take = 50)
-    {
-        $authUser = auth()->user();
-
-        if ($this->is($authUser)) return $this->posts()->latest()->take($take)->get();
-
-        if ($this->isFriendOf($authUser)) return $this->posts()->publicOrFriendsPrivacy()->latest()->take($take)->get();
-
-        return $this->posts()->publicPrivacy()->latest()->take($take)->get();
-    }
-
-    public static function search($q, $take = 50)
-    {
-        return static::where('first_name', 'like', "%$q%")->orWhere('last_name', 'like', "%$q%")->latest()->take($take)->get();
+        return $this->hasOne(Profile::class);
     }
 
     public function activities()
@@ -112,13 +72,21 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Activity::class);
     }
 
-    public function friendsPosts()
+    public static function search($q, $take = 50)
     {
-        return Post::friends($this)->publicOrFriendsPrivacy()->get();
+        return static::where('first_name', 'like', "%$q%")->orWhere('last_name', 'like', "%$q%")->latest()->take($take)->get();
     }
 
-    public function friendsActivities($take = 20)
+    public function friendsActivities($take = 10)
     {
         return Activity::friends($this)->latest()->take($take)->get();
+    }
+
+    public function profilePosts($take = 50)
+    {
+        $authUser = auth()->user();
+        if ($this->is($authUser)) return $this->posts()->latest()->take($take)->get();
+        if ($this->isFriendOf($authUser)) return $this->posts()->publicOrFriendsPrivacy()->latest()->take($take)->get();
+        return $this->posts()->publicPrivacy()->latest()->take($take)->get();
     }
 }

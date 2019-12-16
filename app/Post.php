@@ -23,11 +23,6 @@ class Post extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public static function publish($post)
-    {
-        return static::create($post);
-    }
-
     public function getEncodedImagesAttribute()
     {
         $encoded_images = [];
@@ -97,5 +92,24 @@ class Post extends Model
                             ->friendsPrivacy();
                     });
             })->latest()->take($take)->get();
+    }
+
+    public static function homePosts($skip = 0, $take = 10)
+    {
+        return static::friends(auth()->user())
+            ->publicOrFriendsPrivacy()
+            ->orWhere('user_id', auth()->user()->id)
+            ->skip($skip)
+            ->take($take)
+            ->latest()
+            ->get();
+    }
+
+    public static function homePostsTotalCount()
+    {
+        return static::friends(auth()->user())
+            ->publicOrFriendsPrivacy()
+            ->orWhere('user_id', auth()->user()->id)
+            ->count();
     }
 }

@@ -24,12 +24,14 @@ class FriendshipController extends Controller
 
     public function destroy(User $user)
     {
-        if (auth()->user()->isFriendOf($user)) {
-            auth()->user()->unfriend($user);
+        $auth_user = auth()->user();
+
+        if ($auth_user->isFriendOf($user)) {
+            $auth_user->unfriend($user);
             return response()->json('Friendship ended successfully', 200);
         }
 
-        auth()->user()->cancelFriendRequest($user);
+        $auth_user->cancelFriendRequest($user);
         return response()->json('Friend request canceled successfully', 200);
     }
 }

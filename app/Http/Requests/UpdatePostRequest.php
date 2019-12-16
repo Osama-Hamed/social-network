@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Gate;
+use App\Services\UploadBase64Images;
 
 class UpdatePostRequest extends PostFormRequest
 {
@@ -23,7 +24,7 @@ class UpdatePostRequest extends PostFormRequest
 
             $post->update([
                 'body' => $this->body,
-                'images' => $this->uploadImages(),
+                'images' => app(UploadBase64Images::class)->uploadMultiple($this->images),
                 'privacy' => $this->privacy
             ]);
         })->refresh();

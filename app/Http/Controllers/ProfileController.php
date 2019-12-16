@@ -10,14 +10,16 @@ class ProfileController extends Controller
 {
     public function show(User $user)
     {
+        $auth_user = auth()->user();
+
     	return response()->json([
-    		'profileUser' => $user,
-    		'profilePosts' => $user->profilePosts(),
-            'profileFriends' => $user->allFriends(),
+    		'owner' => $user,
+    		'posts' => $user->profilePosts(),
+            'friends' => $user->allFriends(),
             'friendship' => [
-                'isEstablished' => auth()->user()->isFriendOf($user),
-                'isRecieved' => auth()->user()->hasFriendRequestFrom($user),
-                'isSent' => auth()->user()->sentFriendRequestTo($user)
+                'isEstablished' => $auth_user->isFriendOf($user),
+                'isRecieved' => $auth_user->hasFriendRequestFrom($user),
+                'isSent' => $auth_user->sentFriendRequestTo($user)
             ]
     	], 200);
     }

@@ -1,7 +1,7 @@
 <template>
     <div class="card mb-4 pb-4">
         <div class="media mx-4 mt-3">
-            <img :src="data.owner.avatarPath" class="mr-3 medium-profile-image">
+            <img :src="data.owner.profile.avatarPath" class="mr-3 medium-profile-image">
             <div class="media-body my-auto">
                 <p class="mb-0 ">
                     <router-link :to="{name: 'profile', params: {username: data.owner.username}}" class="font-weight-bold username">
@@ -9,7 +9,7 @@
                     </router-link>
                 </p>
                 <p class="mb-0">
-                    <router-link :to="{name: 'post', params: {post: data.id}}" class="small date mr-1">{{ data.created_at | date }}</router-link>
+                    <router-link :to="{name: 'post', params: {post: data.id}}" class="small date mr-1">{{ data.created_at | date('LLL') }}</router-link>
                     <img :src="'/images/' + data.privacy + '.png'">
                 </p>
             </div>
@@ -35,10 +35,6 @@
                 <img src="/images/comment.png" class="post-action" @click="focusOnCommentsInput">
                 <small>{{ commentsCount }}</small>
             </span>
-            <span data-toggle="tooltip" data-placement="bottom" title="Shares">
-                <img src="/images/share.png" class="post-action">
-                <small>14</small>
-            </span>
         </div>
 
         <new-comment :post-id="data.id" ref="newComment"></new-comment>
@@ -51,7 +47,6 @@
 
 <script>
     import Carousel from './Carousel.vue';
-    import moment from 'moment';
     import EditPost from './EditPost.vue';
     import DeletePost from './DeletePost.vue';
     import NewComment from './NewComment.vue';
@@ -87,12 +82,6 @@
 
             commentsCount() {
                 return this.data.comments.length;
-            }
-        },
-
-        filters: {
-            date(value) {
-                return moment(value).format('LLL');
             }
         }
     }

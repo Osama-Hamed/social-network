@@ -1,6 +1,6 @@
 import VueRouter from 'vue-router';
 import Event from '../shared/event';
-import { getUser, hasAccess, removeAccess } from './helpers';
+import { getAuthUser, hasAccess, removeAccess } from './helpers';
 
 const routes = [
     {
@@ -71,6 +71,21 @@ const routes = [
             requiresAuth: true
         }
     },
+    {
+        path: '/404',
+        name: 'notFound',
+        component: require('../pages/NotFound.vue').default,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '*',
+        component: require('../pages/NotFound.vue').default,
+        meta: {
+            requiresAuth: true
+        }
+    },
 ];
 
 const router = new VueRouter({
@@ -81,7 +96,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (hasAccess()) {
-            getUser()
+            getAuthUser()
                 .then(({data}) => {
                     Event.fire('authenticated', data);
                     next();
@@ -98,7 +113,7 @@ router.beforeEach((to, from, next) => {
 
     } else if (to.matched.some(record => record.meta.guest)) {
         if (hasAccess()) {
-            getUser()
+            getAuthUser()
                 .then(({data}) => {
                     Event.fire('authenticated', data);
                     next({name: 'home'});

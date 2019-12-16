@@ -20,7 +20,7 @@
 		methods: {
 			toggle() {
 				if (this.active) {
-					axios[api.favorite.delete.method](api.favorite.delete.url(this.favoritableType, this.favoritable.id))
+					axios[api.deleteFavorite.method](api.deleteFavorite.url(this.favoritableType, this.favoritable.id))
 			            .then(response => {
 			            	this.active = false;
 							this.count--;
@@ -30,7 +30,7 @@
 					return;
 				}
 				
-				axios[api.favorite.create.method](api.favorite.create.url(this.favoritableType, this.favoritable.id))
+				axios[api.storeFavorite.method](api.storeFavorite.url(this.favoritableType, this.favoritable.id))
 					.then(response => {
 			            this.active = true;
 						this.count++;

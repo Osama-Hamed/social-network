@@ -11,8 +11,8 @@ class PostController extends Controller
     public function index()
     {
         return response()->json([
-            'posts' => auth()->user()->relatedPosts(request('skip'), request('take')),
-            'totalPostsCount' => auth()->user()->relatedPostsCount()
+            'posts' => Post::homePosts(request('skip'), request('take')),
+            'totalPostsCount' => Post::homePostsTotalCount()
         ], 200);
     }
 
@@ -20,7 +20,7 @@ class PostController extends Controller
     {
         if ($post->isAccessibleFor(auth()->user())) return response()->json($post, 200);
 
-        return response()->json([], 204);
+        return response()->json(null, 404);
     }
 
     public function store(StorePostRequest $form)

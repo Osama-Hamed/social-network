@@ -27,16 +27,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/comments/{comment}/favorites', 'CommentFavoriteController@store');
     Route::delete('/comments/{comment}/favorites', 'CommentFavoriteController@destroy');
 
-    Route::get('/profile/{user}', 'ProfileController@show');
-    Route::patch('/profile/{user}', 'ProfileController@update');
+    Route::get('/profiles/{user}', 'ProfileController@show');
+    Route::patch('/profiles/{user}', 'ProfileController@update');
 
     Route::post('/friendships', 'FriendshipController@store');
     Route::patch('/friendships/{user}', 'FriendshipController@update');
     Route::delete('/friendships/{user}', 'FriendshipController@destroy');
 
-    Route::get('/fof', 'FriendOfFriendController@index');
-
+    Route::get('/home', 'HomeController');
+    
     Route::get('/search', 'SearchController@show');
-
-    Route::get('/activities', 'ActivityController@index');
 });

@@ -12,4 +12,4 @@ export let hasAccess = () => localStorage.getItem(ACCESS_NAME);
 
 export let removeAccess = () => localStorage.removeItem(ACCESS_NAME);
 
-export let getUser = () => axios[api.auth.user.method](api.auth.user.url());
+export let getAuthUser = () => axios[api.getAuthUser.method](api.getAuthUser.url());

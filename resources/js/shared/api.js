@@ -1,162 +1,23 @@
 export default {
-    auth: {
-        register: {
-            method: 'post',
-            url() {
-                return '/api/auth/register';
-            }
-        },
-        login: {
-            method: 'post',
-            url() {
-                return '/api/auth/login';
-            }
-        },
-        logout: {
-            method: 'post',
-            url() {
-                return '/api/auth/logout';
-            }
-        },
-        user: {
-            method: 'get',
-            url() {
-                return '/api/auth/user';
-            }
-        }
-    },
-
-    post: {
-        create: {
-            method: 'post',
-            url() {
-                return '/api/posts';
-            }
-        },
-        all: {
-            method: 'get',
-            url() {
-                return '/api/posts';
-            }
-        },
-        update: {
-            method: 'patch',
-            url(id) {
-                return '/api/posts/' + id;
-            }
-        },
-        delete: {
-            method: 'delete', 
-            url(id) {
-                return '/api/posts/' + id;
-            }
-        },
-        show: {
-            method: 'get',
-            url(id) {
-                return '/api/posts/' + id;
-            }
-        }
-    },
-
-    comment: {
-        create: {
-            method: 'post',
-            url(postId) {
-                return '/api/posts/' + postId + '/comments';
-            }
-        },
-        update: {
-            method: 'patch',
-            url(id) {
-                return '/api/comments/' + id;
-            }
-        },
-        delete: {
-            method: 'delete',
-            url(id) {
-                return '/api/comments/' + id;
-            }
-        }
-    },
-
-    favorite: {
-        create: {
-            method: 'post',
-            url(type, id) {
-                return '/api/' + type + 's/' + id + '/favorites';
-            }
-        },
-        delete: {
-            method: 'delete',
-            url(type, id) {
-                return '/api/' + type + 's/' + id + '/favorites';
-            }
-        }
-    },
-
-    profile: {
-        show: {
-            method: 'get',
-            url(username) {
-                return '/api/profile/' + username;
-            }
-        },
-        update: {
-            method: 'patch',
-            url(username) {
-                return '/api/profile/' + username
-            }
-        }
-    },
-
-    friendship: {
-        create: {
-            method: 'post',
-            url() {
-                return '/api/friendships';
-            }
-        },
-
-        update: {
-            method: 'patch',
-            url(username) {
-                return '/api/friendships/' + username;
-            }
-        },
-
-        delete: {
-            method: 'delete',
-            url(username) {
-                return '/api/friendships/' + username;
-            }
-        }
-    },
-
-    friendOfFriend: {
-        all: {
-            method: 'get',
-            url() {
-                return '/api/fof';
-            }
-        }
-    },
-
-    search: {
-        show: {
-            method: 'get',
-            url() {
-                return '/api/search';
-            }
-        }
-    },
-
-    activity: {
-        all: {
-            method: 'get',
-            url() {
-                return '/api/activities';
-            }
-        }
-    }    
+    register: {method: 'post', url() {return '/api/auth/register';}},
+    login: {method: 'post', url() {return '/api/auth/login';}},
+    logout: {method: 'post', url() {return '/api/auth/logout';}},
+    getAuthUser: {method: 'get', url() {return '/api/auth/user';}},
+    home: {method: 'get', url() {return '/api/home';}},
+    search: {method: 'get', url() {return '/api/search';}},
+    storePost: {method: 'post', url() {return '/api/posts';}},
+    getAllPosts: {method: 'get', url() {return '/api/posts';}},
+    updatePost: {method: 'patch', url(id) {return '/api/posts/' + id;}},
+    deletePost: {method: 'delete', url(id) {return '/api/posts/' + id;}},
+    getPost: {method: 'get', url(id) {return '/api/posts/' + id;}},
+    storeComment: {method: 'post', url(postId) {return '/api/posts/' + postId + '/comments';}},
+    updateComment: {method: 'patch', url(id) {return '/api/comments/' + id;}},
+    deleteComment: {method: 'delete', url(id) {return '/api/comments/' + id;}},
+    storeFavorite: {method: 'post', url(type, id) {return '/api/' + type + 's/' + id + '/favorites';}},
+    deleteFavorite: {method: 'delete', url(type, id) {return '/api/' + type + 's/' + id + '/favorites';}},
+    getProfile: {method: 'get', url(username) {return '/api/profiles/' + username;}},
+    updateProfile: {method: 'patch', url(username) {return '/api/profiles/' + username}},
+    storeFriendship: {method: 'post', url() {return '/api/friendships';}},
+    updateFriendship: {method: 'patch', url(username) {return '/api/friendships/' + username;}},
+    deleteFriendship: {method: 'delete', url(username) {return '/api/friendships/' + username;}}
 }

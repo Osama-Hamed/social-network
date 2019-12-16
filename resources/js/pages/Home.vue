@@ -2,13 +2,13 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="card mb-4">
-                <img :src="authAvatar" class="card-img-top mx-auto d-block mt-4 big-profile-image">
+                <img :src="profileAvatar" class="card-img-top mx-auto d-block mt-4 big-profile-image">
                 <div class="card-body text-center mt-2">
-                    <router-link :to="{name: 'profile', params: {username: authName}}" 
+                    <router-link :to="{name: 'profile', params: {username: authUsername}}" 
                         class="username font-weight-bold">
-                        {{ authName }}
+                        {{ authUsername }}
                     </router-link>
-                    <p class="card-text mt-2">{{ authBio }}</p>
+                    <p class="card-text mt-2">{{ profileBio }}</p>
                 </div>
             </div>
         </div>
@@ -24,11 +24,11 @@
         </div>
 
         <div class="col lg-3">
-            <div class="card mb-4" v-if="activities.length > 0">
+            <div class="card mb-4" v-if="friendsActivities.length > 0">
                 <h6 class="p-3 border-bottom mb-0">Friends Activity</h6>
                 <div class="card-body p-3 activity-panel">
-                    <div class="media mb-3" v-for="activity in activities">
-                        <img :src="activity.maker.avatarPath" class="mr-2 small-profile-image">
+                    <div class="media mb-3" v-for="activity in friendsActivities" :key="activity.id">
+                        <img :src="activity.maker.profile.avatarPath" class="mr-2 small-profile-image">
 
                         <div class="media-body my-auto small" v-if="activity.type == 'created_post'">
                             <router-link class="font-weight-bold" :to="{name: 'profile', params: {username: activity.maker.username}}">{{ activity.maker.first_name }}</router-link>
@@ -70,8 +70,8 @@
             <div class="card mb-4" v-if="friendsOfFriends.length > 0">
                 <h6 class="p-3 border-bottom mb-0">People You May Know</h6>
                 <div class="card-body p-3">
-                    <div class="media mb-3" v-for="(fof, index) in friendsOfFriends">
-                        <img :src="fof.avatarPath" class="mr-2 small-profile-image">
+                    <div class="media mb-3" v-for="(fof, index) in friendsOfFriends" :key="fof.id">
+                        <img :src="fof.profile.avatarPath" class="mr-2 small-profile-image">
                         <div class="media-body my-auto small">
                             <router-link :to="{name: 'profile', params: {username: fof.username}}" class="font-weight-bold d-inline-block mt-1">
                                 {{ fof.first_name + ' ' + fof.last_name }}
@@ -97,9 +97,9 @@
             return {
                 posts: [],
                 totalPostsCount: 0,
-                skip: 0,
-                take: 10,
-                activities: [],
+                postsToSkip: 0,
+                postsToTake: 10,
+                friendsActivities: [],
                 friendsOfFriends: [],
                 isReady: false
             }
@@ -107,67 +107,61 @@
 
         created() {
             this.fetchPosts();
-            this.fetchActivities();
-            this.fetchFriendsOfFriends();
+            this.fetchSecondaryData();
             let vm = this;
-            setInterval(() => {vm.fetchActivities()}, 60000);
-
+            setInterval(() => {vm.fetchSecondaryData()}, 60000);
             window.addEventListener('scroll', (e) => {
-                if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight && this.skip < this.totalPostsCount) {
+                if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight && this.postsToSkip < this.totalPostsCount) {
                     this.fetchPosts();
                 }
-            })
+            });
         },
 
         methods: {
             async fetchPosts() {
                 try {
-                    const response = await axios[api.post.all.method](api.post.all.url(), {
+                    const response = await axios[api.getAllPosts.method](api.getAllPosts.url(), {
                         params: {
-                            skip: this.skip,
-                            take: this.take
+                            skip: this.postsToSkip,
+                            take: this.postsToTake
                         }
                     });
+                    
                     response.data.posts.forEach(post => this.posts.push(post));
                     this.totalPostsCount = response.data.totalPostsCount;
-                    this.skip = this.posts.length;
+                    this.postsToSkip = this.posts.length;
                     this.isReady = true;
                 } catch (error) {}
             },
 
-            async fetchActivities() {
+            async fetchSecondaryData() {
                 try {
-                    const response = await axios[api.activity.all.method](api.activity.all.url());
-                    this.activities = response.data;
-                } catch (error) {}
-            },
+                    const response = await axios[api.home.method](api.home.url());
 
-            async fetchFriendsOfFriends() {
-                try {
-                    const response = await axios[api.friendOfFriend.all.method](api.friendOfFriend.all.url());
-                    this.friendsOfFriends = response.data;
+                    this.friendsActivities = response.data.friendsActivities;
+                    this.friendsOfFriends = response.data.friendsOfFriends;
                 } catch (error) {}
             },
 
             async sendFriendRequest(username, index) {
                 try {
-                    const response = await axios[api.friendship.create.method](api.friendship.create.url(), {username: username});
+                    const response = await axios[api.storeFriendship.method](api.storeFriendship.url(), {username: username});
                     this.friendsOfFriends.splice(index, 1);
                 } catch (error) {}
             }
         },
 
         computed: {
-            authAvatar() {
-                return window.authUser.avatarPath;
+            profileAvatar() {
+                return window.authUser.profile.avatarPath;
             },
 
-            authName() {
+            authUsername() {
                 return window.authUser.username;
             },
 
-            authBio() {
-                return window.authUser.bio;
+            profileBio() {
+                return window.authUser.profile.bio;
             }
         }
     }

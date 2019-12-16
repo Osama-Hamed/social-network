@@ -33,7 +33,7 @@
 					<div class="card mb-2">
 						<div class="card-body py-2">
 							<div class="media d-flex flex-wrap align-items-center">
-								<img :src="result.avatarPath" class="mr-3 small-profile-image">
+								<img :src="result.profile.avatarPath" class="mr-3 small-profile-image">
 								<div class="media-body mt-2">
 									<p class="mb-0">
 					                    <router-link :to="{name: 'profile', params: {username: result.username}}" class="font-weight-bold username">
@@ -77,7 +77,7 @@
 			async search() {
 				try {
 					this.hasResult = false;
-					const response = await axios[api.search.show.method](api.search.show.url(this.resource), {
+					const response = await axios[api.search.method](api.search.url(this.resource), {
 						params: {q: this.query, r: this.resource}
 					});
 

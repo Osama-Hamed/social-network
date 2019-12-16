@@ -94,7 +94,7 @@
 
             async update() {
                 try {
-                    const response = await this.form[api.post.update.method](api.post.update.url(this.data.id));
+                    const response = await this.form[api.updatePost.method](api.updatePost.url(this.data.id));
                     Event.fire('post-updated', response.data);
                 } catch (error) {}
             },

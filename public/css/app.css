@@ -10647,7 +10647,7 @@ a.text-dark:focus {
 html,
 body {
   background-color: #e6ecf0;
-  color: #15171A;
+  color: #374149;
   font-family: "Nunito", sans-serif;
 }
 
@@ -10697,6 +10697,7 @@ a.date {
 .submit-button:hover {
   background-color: #657786;
   color: #FFFFFF;
+  border-radius: 0;
 }
 
 textarea {
@@ -10813,5 +10814,9 @@ textarea {
 .activity-panel {
   max-height: 300px;
   overflow-y: overlay;
+}
+
+.form-control {
+  border-color: #bbbbbb;
 }
 

@@ -48,7 +48,7 @@
 
 			async request() {
 				try {
-					const response = await axios[api.friendship.create.method](api.friendship.create.url(), {username: this.profileUser});
+					const response = await axios[api.storeFriendship.method](api.storeFriendship.url(), {username: this.profileUser});
 					this.isEstablished = false;
 					this.isSent = true;
 					this.isRecieved = false;
@@ -57,7 +57,7 @@
 
 			async reject() {
 				try {
-					const response = await axios[api.friendship.delete.method](api.friendship.delete.url(this.profileUser));
+					const response = await axios[api.deleteFriendship.method](api.deleteFriendship.url(this.profileUser));
 					this.isEstablished = false;
 					this.isSent = false;
 					this.isRecieved = false;
@@ -66,7 +66,7 @@
 
 			async accept() {
 				try {
-					const response = await axios[api.friendship.update.method](api.friendship.update.url(this.profileUser));
+					const response = await axios[api.updateFriendship.method](api.updateFriendship.url(this.profileUser));
 					this.isEstablished = true;
 					this.isSent = false;
 					this.isRecieved = false;

@@ -1,5 +1,5 @@
 <template>
-    <div class="card mb-4">
+    <div class="card mb-4 border-0">
         <div class="card-body p-0">
             <form @submit.prevent="publish">
                 <div class="form-group mb-0">
@@ -64,7 +64,7 @@
         methods: {
             async publish() {
                 try {
-                    const response = await this.form[api.post.create.method](api.post.create.url());
+                    const response = await this.form[api.storePost.method](api.storePost.url());
                     Event.fire('post-created', response.data);
                     this.form.privacy = '1';
                 } catch (error) {}

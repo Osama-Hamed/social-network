@@ -5,7 +5,7 @@
 				<div class="card mb-3">
 					<div class="card-body py-2">
 						<div class="media d-flex flex-wrap align-items-center">
-							<img :src="user.avatarPath" class="mr-3 medium-profile-image">
+							<img :src="user.profile.avatarPath" class="mr-3 medium-profile-image">
 							<div class="media-body mt-2">
 								<p class="mb-0">
 				                    <router-link :to="{name: 'profile', params: {username: user.username}}" class="font-weight-bold username">

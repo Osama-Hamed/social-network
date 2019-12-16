@@ -22,7 +22,7 @@
 					<div class="card-body p-0">
 						<div class="row p-0 m-0">
 							<div class="col-lg-4 pl-1 pr-1 mb-1 small-gallery" v-for="friend in friends">
-								<img :src="friend.avatarPath" class="img-fluid gallery-photo img-thumbnail" :title="friend.username">
+								<img :src="friend.profile.avatarPath" class="img-fluid gallery-photo img-thumbnail" :title="friend.username">
 							</div>
 						</div>
 					</div>
